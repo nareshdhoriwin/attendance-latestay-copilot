@@ -81,7 +81,7 @@ Leave management
 
 Shape 
 
-3. **Functional Requirements **
+3. **Functional Requirements**
 
 FR-01: System automatically records employee check-in & Check out using face recognition & calculates work hours 
 

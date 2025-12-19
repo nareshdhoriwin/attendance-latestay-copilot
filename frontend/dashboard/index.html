@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Attendance & Late-Stay Copilot Dashboard</title>
+    <title>WinAttendance - Workforce Monitoring Dashboard</title>
     <link rel="stylesheet" href="/static/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -12,10 +12,13 @@
     <div class="dashboard-container">
         <!-- Header -->
         <header class="dashboard-header">
+            <div class="header-background-pattern"></div>
             <div class="header-content">
                 <div class="logo-section">
-                    <h1>📊 Attendance & Late-Stay Copilot</h1>
-                    <p class="subtitle">AI-Powered Workforce Monitoring</p>
+                    <div class="winwire-brand">
+                        <span class="brand-win">Win</span><span class="brand-attendance">Attendance</span>
+                    </div>
+                    <p class="subtitle">AI-Powered Workforce Monitoring & Late-Stay Tracking</p>
                 </div>
                 <div class="header-actions">
                     <button class="btn-refresh" onclick="loadDashboard()">
@@ -28,67 +31,99 @@
             </div>
         </header>
 
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <button class="nav-tab active" onclick="showPage('dashboard')" data-page="dashboard">
+                <span>📊</span> Dashboard
+            </button>
+            <button class="nav-tab" onclick="showPage('attendance')" data-page="attendance">
+                <span>📋</span> Attendance
+            </button>
+            <button class="nav-tab" onclick="showPage('late-stay')" data-page="late-stay">
+                <span>🌙</span> Late Stay
+            </button>
+            <button class="nav-tab" onclick="showPage('reports')" data-page="reports">
+                <span>📈</span> Reports
+            </button>
+        </nav>
+
         <!-- Main Content -->
         <main class="dashboard-main">
-            <!-- Stats Cards -->
-            <section class="stats-grid">
-                <div class="stat-card stat-primary">
-                    <div class="stat-icon">👥</div>
-                    <div class="stat-content">
-                        <h3>Total Present</h3>
-                        <p class="stat-value" id="totalPresent">-</p>
-                        <span class="stat-label">Today</span>
+            <!-- Dashboard/Overview Page -->
+            <div id="page-dashboard" class="page-content active">
+                <!-- Stats Cards -->
+                <section class="stats-grid">
+                    <div class="stat-card stat-primary">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-content">
+                            <h3>Total Present</h3>
+                            <p class="stat-value" id="totalPresent">-</p>
+                            <span class="stat-label">Today</span>
+                        </div>
                     </div>
-                </div>
 
-                <div class="stat-card stat-warning">
-                    <div class="stat-icon">🌙</div>
-                    <div class="stat-content">
-                        <h3>Late Stay</h3>
-                        <p class="stat-value" id="lateStayCount">-</p>
-                        <span class="stat-label">After 8:00 PM</span>
+                    <div class="stat-card stat-warning">
+                        <div class="stat-icon">🌙</div>
+                        <div class="stat-content">
+                            <h3>Late Stay</h3>
+                            <p class="stat-value" id="lateStayCount">-</p>
+                            <span class="stat-label">After 8:00 PM</span>
+                        </div>
                     </div>
-                </div>
 
-                <div class="stat-card stat-danger">
-                    <div class="stat-icon">👩</div>
-                    <div class="stat-content">
-                        <h3>Women Late Stay</h3>
-                        <p class="stat-value" id="womenLateStay">-</p>
-                        <span class="stat-label">Safety Compliance</span>
+                    <div class="stat-card stat-danger">
+                        <div class="stat-icon">👩</div>
+                        <div class="stat-content">
+                            <h3>Women Late Stay</h3>
+                            <p class="stat-value" id="womenLateStay">-</p>
+                            <span class="stat-label">Safety Compliance</span>
+                        </div>
                     </div>
-                </div>
 
-                <div class="stat-card stat-success">
-                    <div class="stat-icon">✅</div>
-                    <div class="stat-content">
-                        <h3>WFO Compliance</h3>
-                        <p class="stat-value" id="wfoCompliance">-</p>
-                        <span class="stat-label">% Present</span>
+                    <div class="stat-card stat-success">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-content">
+                            <h3>WFO Compliance</h3>
+                            <p class="stat-value" id="wfoCompliance">-</p>
+                            <span class="stat-label">% Present</span>
+                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
 
-            <!-- Charts Section -->
-            <section class="charts-section">
-                <div class="chart-card">
-                    <h2>Attendance Overview</h2>
-                    <canvas id="attendanceChart"></canvas>
-                </div>
-                <div class="chart-card">
-                    <h2>Late Stay by Gender</h2>
-                    <canvas id="genderChart"></canvas>
-                </div>
-            </section>
+                <!-- Charts Section -->
+                <section class="charts-section">
+                    <div class="chart-card">
+                        <h2>Attendance Overview</h2>
+                        <div class="chart-container">
+                            <canvas id="attendanceChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <h2>Late Stay by Gender</h2>
+                        <div class="chart-container chart-container-small">
+                            <canvas id="genderChart"></canvas>
+                        </div>
+                    </div>
+                </section>
+            </div>
 
-            <!-- Tables Section -->
-            <section class="tables-section">
+            <!-- Attendance Page -->
+            <div id="page-attendance" class="page-content">
+                <div class="page-header">
+                    <h1>📋 Attendance Records</h1>
+                    <p>View and manage employee attendance records</p>
+                </div>
                 <div class="table-card">
                     <div class="table-header">
-                        <h2>📋 Today's Attendance</h2>
-                        <div style="display:flex;gap:8px;align-items:center;">
-                            <button class="btn-filter" onclick="toggleFilter()">Filter</button>
-                            <button class="btn-filter" onclick="toggleStatusFilter()">Status</button>
+                        <h2>Today's Attendance</h2>
+                        <div class="table-actions">
+                            <input type="text" id="attendanceSearch" class="search-input" placeholder="Search by name or ID..." onkeyup="filterAttendanceTable()">
+                            <select id="statusFilter" class="filter-select" onchange="filterAttendanceTable()">
+                                <option value="">All Status</option>
+                                <option value="On Time">On Time</option>
+                                <option value="Late Arrival">Late Arrival</option>
+                                <option value="Late Stay">Late Stay</option>
+                            </select>
                             <button class="btn-filter" onclick="clearFilter()">Clear</button>
                         </div>
                     </div>
@@ -96,11 +131,21 @@
                         <table id="attendanceTable">
                             <thead>
                                 <tr>
-                                    <th>Employee ID</th>
-                                    <th>Name</th>
-                                    <th>Check-in</th>
-                                    <th>Check-out</th>
-                                    <th>Hours</th>
+                                    <th class="sortable" onclick="sortTable('attendanceTable', 0)">
+                                        Employee ID <span class="sort-icon">⇅</span>
+                                    </th>
+                                    <th class="sortable" onclick="sortTable('attendanceTable', 1)">
+                                        Name <span class="sort-icon">⇅</span>
+                                    </th>
+                                    <th class="sortable" onclick="sortTable('attendanceTable', 2)">
+                                        Check-in <span class="sort-icon">⇅</span>
+                                    </th>
+                                    <th class="sortable" onclick="sortTable('attendanceTable', 3)">
+                                        Check-out <span class="sort-icon">⇅</span>
+                                    </th>
+                                    <th class="sortable" onclick="sortTable('attendanceTable', 4)">
+                                        Hours <span class="sort-icon">⇅</span>
+                                    </th>
                                     <th>Status</th>
                                 </tr>
                             </thead>
@@ -112,12 +157,29 @@
                         </table>
                     </div>
                 </div>
+            </div>
 
+            <!-- Late Stay Page -->
+            <div id="page-late-stay" class="page-content">
+                <div class="page-header">
+                    <h1>🌙 Late Stay Monitoring</h1>
+                    <p>Track employees staying after 8:00 PM, with special focus on women employee safety</p>
+                </div>
                 <div class="table-card">
                     <div class="table-header">
-                        <h2>🌙 Late Stay Employees (After 8:00 PM)</h2>
-                        <div style="display:flex;gap:8px;align-items:center;">
-                            <button class="btn-filter" onclick="toggleLateStayFilter()">Filter</button>
+                        <h2>Late Stay Employees (After 8:00 PM)</h2>
+                        <div class="table-actions">
+                            <input type="text" id="lateStaySearch" class="search-input" placeholder="Search by name or ID..." onkeyup="filterLateStayTable()">
+                            <select id="genderFilter" class="filter-select" onchange="filterLateStayTable()">
+                                <option value="">All Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                            <select id="projectFilter" class="filter-select" onchange="filterLateStayTable()">
+                                <option value="">All Projects</option>
+                                <option value="P101">P101</option>
+                                <option value="P102">P102</option>
+                            </select>
                             <button class="btn-filter" onclick="clearLateStayFilter()">Clear</button>
                         </div>
                     </div>
@@ -125,12 +187,24 @@
                         <table id="lateStayTable">
                             <thead>
                                 <tr>
-                                    <th>Employee ID</th>
-                                    <th>Name</th>
-                                    <th>Gender</th>
-                                    <th>Check-out</th>
-                                    <th>Project</th>
-                                    <th>Office</th>
+                                    <th class="sortable" onclick="sortTable('lateStayTable', 0)">
+                                        Employee ID <span class="sort-icon">⇅</span>
+                                    </th>
+                                    <th class="sortable" onclick="sortTable('lateStayTable', 1)">
+                                        Name <span class="sort-icon">⇅</span>
+                                    </th>
+                                    <th class="sortable" onclick="sortTable('lateStayTable', 2)">
+                                        Gender <span class="sort-icon">⇅</span>
+                                    </th>
+                                    <th class="sortable" onclick="sortTable('lateStayTable', 3)">
+                                        Check-out <span class="sort-icon">⇅</span>
+                                    </th>
+                                    <th class="sortable" onclick="sortTable('lateStayTable', 4)">
+                                        Project <span class="sort-icon">⇅</span>
+                                    </th>
+                                    <th class="sortable" onclick="sortTable('lateStayTable', 5)">
+                                        Office <span class="sort-icon">⇅</span>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody id="lateStayTableBody">
@@ -141,19 +215,24 @@
                         </table>
                     </div>
                 </div>
-            </section>
+            </div>
 
-            <!-- Project Work Balance Section -->
-            <section class="project-section">
-                <h2>📊 Project Work Balance</h2>
-                <div class="project-cards" id="projectCards">
-                    <!-- Project cards will be dynamically loaded -->
+            <!-- Reports Page -->
+            <div id="page-reports" class="page-content">
+                <div class="page-header">
+                    <h1>📈 Reports & Analytics</h1>
+                    <p>Work balance analysis, WFO compliance, and project insights</p>
                 </div>
-            </section>
+                <section class="project-section">
+                    <h2>📊 Project Work Balance</h2>
+                    <div class="project-cards" id="projectCards">
+                        <!-- Project cards will be dynamically loaded -->
+                    </div>
+                </section>
+            </div>
         </main>
     </div>
 
     <script src="/static/dashboard.js"></script>
 </body>
 </html>
-

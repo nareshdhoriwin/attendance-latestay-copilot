@@ -1,0 +1,27 @@
+{
+  "date": "2025-03-18",
+  "attendance_records": [
+    {
+      "employee_id": "E1001",
+      "checkin_time": "09:05",
+      "checkout_time": "20:45",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "employee_id": "E1002",
+      "checkin_time": "09:40",
+      "checkout_time": "18:30",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "employee_id": "E1003",
+      "checkin_time": "09:10",
+      "checkout_time": "21:15",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    }
+  ]
+}
+

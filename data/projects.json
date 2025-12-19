@@ -1,0 +1,21 @@
+{
+  "projects": [
+    {
+      "project_id": "P101",
+      "project_name": "Pharma Analytics",
+      "project_manager": "Amit Kulkarni",
+      "delivery_lead": "Suresh Rao",
+      "project_type": "Client",
+      "requires_night_shift": true
+    },
+    {
+      "project_id": "P102",
+      "project_name": "Data Platform Upgrade",
+      "project_manager": "Neeraj Gupta",
+      "delivery_lead": "Kavita Iyer",
+      "project_type": "Internal",
+      "requires_night_shift": false
+    }
+  ]
+}
+

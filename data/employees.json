@@ -1,0 +1,29 @@
+{
+  "employees": [
+    {
+      "employee_id": "E1001",
+      "name": "Ananya Sharma",
+      "gender": "Female",
+      "date_of_joining": "2021-06-15",
+      "project_id": "P101",
+      "office_location": "Bengaluru"
+    },
+    {
+      "employee_id": "E1002",
+      "name": "Rahul Verma",
+      "gender": "Male",
+      "date_of_joining": "2020-03-10",
+      "project_id": "P102",
+      "office_location": "Bengaluru"
+    },
+    {
+      "employee_id": "E1003",
+      "name": "Priya Nair",
+      "gender": "Female",
+      "date_of_joining": "2022-01-20",
+      "project_id": "P101",
+      "office_location": "Hyderabad"
+    }
+  ]
+}
+

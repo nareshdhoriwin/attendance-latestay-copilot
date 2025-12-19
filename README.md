@@ -1,3 +1,29 @@
+# Attendance & Late-Stay Copilot
+
+**WinBuild 1.0 – Hackathon Implementation**
+
+AI Copilot for Automated Attendance & Late-Stay Monitoring
+
+## 🚀 Quick Start
+
+1. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+2. **Run the application:**
+   ```bash
+   python run.py
+   ```
+
+3. **Access the dashboard:**
+   - Open http://localhost:8000/ in your browser
+   - API docs: http://localhost:8000/docs
+
+For detailed setup instructions, see [SETUP.md](SETUP.md)
+
+---
+
 **WinBuild 1.0 – Hackathon Implementation Document** 
 
 AI Copilot for Attendance & Late-Stay Tracking 

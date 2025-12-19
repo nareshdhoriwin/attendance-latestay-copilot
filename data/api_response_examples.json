@@ -1,0 +1,46 @@
+{
+  "attendance_summary": {
+    "endpoint": "GET /attendance/summary?employee_id=E1001",
+    "response": {
+      "employee_id": "E1001",
+      "date": "2025-03-18",
+      "checkin": "09:05",
+      "checkout": "20:45",
+      "total_hours": "11h 40m",
+      "late_arrival": false
+    }
+  },
+  "late_stay_detection": {
+    "endpoint": "GET /late-stay/after-8pm",
+    "response": {
+      "date": "2025-03-18",
+      "late_stay_employees": [
+        {
+          "employee_id": "E1001",
+          "name": "Ananya Sharma",
+          "gender": "Female",
+          "checkout_time": "20:45",
+          "project_id": "P101"
+        },
+        {
+          "employee_id": "E1003",
+          "name": "Priya Nair",
+          "gender": "Female",
+          "checkout_time": "21:15",
+          "project_id": "P101"
+        }
+      ]
+    }
+  },
+  "work_balance_by_project": {
+    "endpoint": "GET /work-balance/project/P101",
+    "response": {
+      "project_id": "P101",
+      "average_work_hours": "10h 55m",
+      "late_night_frequency": "High",
+      "requires_night_shift": true,
+      "recommendation": "Introduce shift rotation and mandatory rest days"
+    }
+  }
+}
+

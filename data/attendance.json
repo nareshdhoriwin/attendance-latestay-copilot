@@ -1,27 +1,807 @@
 {
   "date": "2025-03-18",
   "attendance_records": [
-    {
+  {
+      "date": "2025-03-18",
       "employee_id": "E1001",
-      "checkin_time": "09:05",
-      "checkout_time": "20:45",
+      "checkin_time": "09:58",
+      "checkout_time": "19:45",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1002",
+      "checkin_time": "09:12",
+      "checkout_time": "22:53",
       "building": "Tower A",
       "office": "Bengaluru"
     },
     {
-      "employee_id": "E1002",
+      "date": "2025-03-18",
+      "employee_id": "E1003",
       "checkin_time": "09:40",
+      "checkout_time": "22:49",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1004",
+      "checkin_time": "09:19",
+      "checkout_time": "18:50",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1005",
+      "checkin_time": "09:36",
+      "checkout_time": "19:34",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1006",
+      "checkin_time": "09:27",
+      "checkout_time": "20:32",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1007",
+      "checkin_time": "09:41",
+      "checkout_time": "21:52",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1008",
+      "checkin_time": "09:31",
+      "checkout_time": "18:27",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1009",
+      "checkin_time": "09:23",
+      "checkout_time": "21:45",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1010",
+      "checkin_time": "09:09",
+      "checkout_time": "22:33",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1011",
+      "checkin_time": "09:41",
+      "checkout_time": "22:49",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1012",
+      "checkin_time": "09:30",
+      "checkout_time": "22:37",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1013",
+      "checkin_time": "09:17",
+      "checkout_time": "19:54",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1014",
+      "checkin_time": "09:15",
+      "checkout_time": "18:17",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1015",
+      "checkin_time": "09:56",
+      "checkout_time": "21:36",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1016",
+      "checkin_time": "09:39",
+      "checkout_time": "21:01",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1017",
+      "checkin_time": "09:31",
+      "checkout_time": "18:31",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1018",
+      "checkin_time": "09:13",
+      "checkout_time": "19:51",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1019",
+      "checkin_time": "09:16",
+      "checkout_time": "22:44",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1020",
+      "checkin_time": "09:56",
+      "checkout_time": "19:35",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1021",
+      "checkin_time": "09:00",
+      "checkout_time": "20:05",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1022",
+      "checkin_time": "09:15",
+      "checkout_time": "21:35",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1023",
+      "checkin_time": "09:48",
+      "checkout_time": "18:44",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1024",
+      "checkin_time": "09:30",
+      "checkout_time": "19:28",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1025",
+      "checkin_time": "09:50",
+      "checkout_time": "21:14",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1026",
+      "checkin_time": "09:25",
+      "checkout_time": "21:42",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1027",
+      "checkin_time": "09:37",
+      "checkout_time": "22:33",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1028",
+      "checkin_time": "09:22",
+      "checkout_time": "22:35",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1029",
+      "checkin_time": "09:21",
+      "checkout_time": "19:44",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1030",
+      "checkin_time": "09:29",
+      "checkout_time": "19:19",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1031",
+      "checkin_time": "09:16",
+      "checkout_time": "22:12",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1032",
+      "checkin_time": "09:20",
+      "checkout_time": "18:47",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1033",
+      "checkin_time": "09:34",
+      "checkout_time": "18:12",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1034",
+      "checkin_time": "09:13",
+      "checkout_time": "21:46",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1035",
+      "checkin_time": "09:37",
+      "checkout_time": "19:06",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1036",
+      "checkin_time": "09:53",
+      "checkout_time": "18:18",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1037",
+      "checkin_time": "09:14",
+      "checkout_time": "21:00",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1038",
+      "checkin_time": "09:45",
+      "checkout_time": "18:17",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1039",
+      "checkin_time": "09:02",
+      "checkout_time": "18:35",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1040",
+      "checkin_time": "09:18",
+      "checkout_time": "20:40",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1041",
+      "checkin_time": "09:55",
+      "checkout_time": "18:55",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1042",
+      "checkin_time": "09:00",
+      "checkout_time": "19:30",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1043",
+      "checkin_time": "09:30",
+      "checkout_time": "19:21",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1044",
+      "checkin_time": "09:11",
+      "checkout_time": "18:16",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1045",
+      "checkin_time": "09:55",
+      "checkout_time": "20:25",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1046",
+      "checkin_time": "09:31",
+      "checkout_time": "22:43",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1047",
+      "checkin_time": "09:03",
+      "checkout_time": "22:19",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1048",
+      "checkin_time": "09:05",
+      "checkout_time": "18:35",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1049",
+      "checkin_time": "09:48",
+      "checkout_time": "19:38",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1050",
+      "checkin_time": "09:38",
+      "checkout_time": "18:49",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1051",
+      "checkin_time": "09:33",
+      "checkout_time": "21:19",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1052",
+      "checkin_time": "09:55",
+      "checkout_time": "19:19",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1053",
+      "checkin_time": "09:36",
+      "checkout_time": "22:47",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1054",
+      "checkin_time": "09:06",
+      "checkout_time": "18:40",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1055",
+      "checkin_time": "09:13",
+      "checkout_time": "20:10",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1056",
+      "checkin_time": "09:15",
+      "checkout_time": "20:10",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1057",
+      "checkin_time": "09:00",
+      "checkout_time": "19:28",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1058",
+      "checkin_time": "09:44",
+      "checkout_time": "19:18",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1059",
+      "checkin_time": "09:02",
+      "checkout_time": "18:18",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1060",
+      "checkin_time": "09:45",
+      "checkout_time": "19:44",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1061",
+      "checkin_time": "09:55",
+      "checkout_time": "19:04",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1062",
+      "checkin_time": "09:43",
+      "checkout_time": "18:59",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1063",
+      "checkin_time": "09:16",
+      "checkout_time": "18:27",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1064",
+      "checkin_time": "09:07",
+      "checkout_time": "22:09",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1065",
+      "checkin_time": "09:58",
+      "checkout_time": "20:04",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1066",
+      "checkin_time": "09:03",
+      "checkout_time": "21:38",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1067",
+      "checkin_time": "09:47",
+      "checkout_time": "19:28",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1068",
+      "checkin_time": "09:07",
+      "checkout_time": "19:44",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1069",
+      "checkin_time": "09:19",
+      "checkout_time": "21:32",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1070",
+      "checkin_time": "09:34",
+      "checkout_time": "20:38",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1071",
+      "checkin_time": "09:02",
+      "checkout_time": "19:38",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1072",
+      "checkin_time": "09:16",
+      "checkout_time": "20:43",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1073",
+      "checkin_time": "09:53",
+      "checkout_time": "18:48",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1074",
+      "checkin_time": "09:43",
+      "checkout_time": "19:36",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1075",
+      "checkin_time": "09:02",
       "checkout_time": "18:30",
       "building": "Tower A",
       "office": "Bengaluru"
     },
     {
-      "employee_id": "E1003",
-      "checkin_time": "09:10",
-      "checkout_time": "21:15",
+      "date": "2025-03-18",
+      "employee_id": "E1076",
+      "checkin_time": "09:33",
+      "checkout_time": "19:58",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1077",
+      "checkin_time": "09:17",
+      "checkout_time": "22:27",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1078",
+      "checkin_time": "09:40",
+      "checkout_time": "18:30",
       "building": "Tower B",
       "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1079",
+      "checkin_time": "09:22",
+      "checkout_time": "19:21",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1080",
+      "checkin_time": "09:20",
+      "checkout_time": "20:21",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1081",
+      "checkin_time": "09:26",
+      "checkout_time": "19:18",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1082",
+      "checkin_time": "09:42",
+      "checkout_time": "19:52",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1083",
+      "checkin_time": "09:48",
+      "checkout_time": "21:05",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1084",
+      "checkin_time": "09:20",
+      "checkout_time": "20:49",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1085",
+      "checkin_time": "09:25",
+      "checkout_time": "18:42",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1086",
+      "checkin_time": "09:55",
+      "checkout_time": "21:03",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1087",
+      "checkin_time": "09:12",
+      "checkout_time": "19:39",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1088",
+      "checkin_time": "09:48",
+      "checkout_time": "21:48",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1089",
+      "checkin_time": "09:03",
+      "checkout_time": "18:17",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1090",
+      "checkin_time": "09:35",
+      "checkout_time": "21:28",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1091",
+      "checkin_time": "09:56",
+      "checkout_time": "19:07",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1092",
+      "checkin_time": "09:01",
+      "checkout_time": "18:45",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1093",
+      "checkin_time": "09:10",
+      "checkout_time": "20:35",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1094",
+      "checkin_time": "09:26",
+      "checkout_time": "18:14",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1095",
+      "checkin_time": "09:53",
+      "checkout_time": "18:29",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1096",
+      "checkin_time": "09:07",
+      "checkout_time": "18:31",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1097",
+      "checkin_time": "09:59",
+      "checkout_time": "22:45",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1098",
+      "checkin_time": "09:17",
+      "checkout_time": "19:53",
+      "building": "Tower B",
+      "office": "Hyderabad"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1099",
+      "checkin_time": "09:30",
+      "checkout_time": "19:15",
+      "building": "Tower A",
+      "office": "Bengaluru"
+    },
+    {
+      "date": "2025-03-18",
+      "employee_id": "E1100",
+      "checkin_time": "09:29",
+      "checkout_time": "18:24",
+      "building": "Tower A",
+      "office": "Bengaluru"
     }
   ]
 }
+
 

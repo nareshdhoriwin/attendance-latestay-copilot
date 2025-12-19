@@ -7,6 +7,7 @@ from datetime import datetime, date
 import json
 import os
 from pathlib import Path
+import traceback
 
 router = APIRouter()
 
@@ -21,6 +22,30 @@ def load_json_file(filename: str):
         raise HTTPException(status_code=404, detail=f"Data file {filename} not found")
     with open(filepath, 'r', encoding='utf-8') as f:
         return json.load(f)
+
+def normalize_attendance_data(attendance_data):
+    """Support two shapes for attendance data:
+    1) { "date": "...", "attendance_records": [ ... ] }
+    2) [ {...}, {...} ]  (top-level array)
+    Returns a tuple: (date_or_none, attendance_records_list)
+    """
+    # If attendance_data is a list, treat it as the records array
+    if isinstance(attendance_data, list):
+        return (None, attendance_data)
+
+    # If it's a dict, try to extract fields with fallbacks
+    if isinstance(attendance_data, dict):
+        records = attendance_data.get("attendance_records")
+        if records is None and any(isinstance(v, list) for v in attendance_data.values()):
+            # defensive: find the first list value and use it
+            for v in attendance_data.values():
+                if isinstance(v, list):
+                    records = v
+                    break
+        return (attendance_data.get("date"), records or [])
+
+    # fallback
+    return (None, [])
 
 def calculate_hours(checkin: str, checkout: str) -> str:
     """Calculate total work hours"""
@@ -40,6 +65,15 @@ def calculate_hours(checkin: str, checkout: str) -> str:
     except:
         return "0h 0m"
 
+def _log_exception(exc: Exception, name: str = "attendance"):
+    try:
+        log_path = DATA_DIR / f"{name}_error.log"
+        with open(log_path, 'a', encoding='utf-8') as lf:
+            lf.write(f"\n--- {datetime.now().isoformat()} ---\n")
+            lf.write(''.join(traceback.format_exception(type(exc), exc, exc.__traceback__)))
+    except Exception:
+        pass
+
 @router.get("/summary")
 async def get_attendance_summary(
     employee_id: str = Query(..., description="Employee ID"),
@@ -50,16 +84,19 @@ async def get_attendance_summary(
     """
     employees_data = load_json_file("employees.json")
     attendance_data = load_json_file("attendance.json")
-    
+
+    # Normalize attendance data
+    file_date, attendance_records = normalize_attendance_data(attendance_data)
+
     # Find employee
-    employee = next((e for e in employees_data["employees"] if e["employee_id"] == employee_id), None)
+    employee = next((e for e in employees_data.get("employees", []) if e.get("employee_id") == employee_id), None)
     if not employee:
         raise HTTPException(status_code=404, detail=f"Employee {employee_id} not found")
     
     # Find attendance record
-    target_date = date or attendance_data["date"]
+    target_date = date or file_date
     attendance_record = next(
-        (r for r in attendance_data["attendance_records"] if r["employee_id"] == employee_id),
+        (r for r in attendance_records if r.get("employee_id") == employee_id),
         None
     )
     
@@ -93,16 +130,19 @@ async def get_attendance_records(
     """
     attendance_data = load_json_file("attendance.json")
     employees_data = load_json_file("employees.json")
-    
+
+    # Normalize attendance data shape
+    file_date, attendance_records = normalize_attendance_data(attendance_data)
+
     # Create employee lookup
-    employee_lookup = {e["employee_id"]: e for e in employees_data["employees"]}
-    
+    employee_lookup = {e["employee_id"]: e for e in employees_data.get("employees", [])}
+
     # Enrich attendance records with employee info
     enriched_records = []
-    for record in attendance_data["attendance_records"]:
-        employee = employee_lookup.get(record["employee_id"], {})
-        total_hours = calculate_hours(record["checkin_time"], record["checkout_time"])
-        
+    for record in attendance_records:
+        employee = employee_lookup.get(record.get("employee_id"), {})
+        total_hours = calculate_hours(record.get("checkin_time", "00:00"), record.get("checkout_time", "00:00"))
+
         enriched_records.append({
             **record,
             "name": employee.get("name", ""),
@@ -110,9 +150,9 @@ async def get_attendance_records(
             "project_id": employee.get("project_id", ""),
             "total_hours": total_hours
         })
-    
+
     return {
-        "date": date or attendance_data["date"],
+        "date": date or file_date,
         "attendance_records": enriched_records
     }
 
@@ -124,10 +164,11 @@ async def get_daily_count(
     Get daily people count in office
     """
     attendance_data = load_json_file("attendance.json")
-    
+    file_date, attendance_records = normalize_attendance_data(attendance_data)
+
     return {
-        "date": date or attendance_data["date"],
-        "total_people": len(attendance_data["attendance_records"]),
+        "date": date or file_date,
+        "total_people": len(attendance_records),
         "count_by_office": {}
     }
 

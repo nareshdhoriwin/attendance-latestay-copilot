@@ -122,30 +122,6 @@
                         </div>
                     </div>
                 </section>
-
-                <!-- Chatbot Widget in Dashboard Tab -->
-                <div class="chat-widget" id="chatWidget">
-                    <button class="chat-button" id="chatToggle" aria-label="Open chat">💬</button>
-                    <div class="chat-panel" id="chatPanel" aria-hidden="true">
-                        <div class="chat-header">
-                            <strong>Winwire Assistant</strong>
-                            <div style="display:flex;gap:8px;align-items:center">
-                                <button id="chatClear" class="chat-clear" title="Clear chat">🗑</button>
-                                <button id="chatClose" class="chat-close">✖</button>
-                            </div>
-                        </div>
-                        <div class="chat-body">
-                            <div class="chat-quick-questions" id="chatQuickQuestions">
-                                <!-- Quick questions will be injected here -->
-                            </div>
-                            <div class="chat-messages" id="chatMessages"></div>
-                        </div>
-                        <div class="chat-footer">
-                            <input type="text" id="chatInput" placeholder="Ask a question or click a quick prompt" />
-                            <button id="chatSend">Send</button>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <!-- Attendance Page -->
@@ -309,6 +285,40 @@
                 </section>
             </div>
         </main>
+
+        <!-- Chatbot Widget (Global - Available on All Tabs) -->
+        <div class="chat-widget" id="chatWidget">
+            <button class="chat-button" id="chatToggle" aria-label="Open chat">
+                <span class="chat-button-icon">🤖</span>
+                <span class="chat-button-pulse"></span>
+            </button>
+            <div class="chat-help-text">Need help ?</div>
+            <div class="chat-panel" id="chatPanel" aria-hidden="true">
+                <div class="chat-header">
+                    <div class="chat-header-title">
+                        <span class="chat-header-icon">🤖</span>
+                        <div>
+                            <strong>WinWire AI Assistant</strong>
+                            <div class="chat-header-status">● Online</div>
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:8px;align-items:center">
+                        <button id="chatClear" class="chat-clear" title="Clear chat">🗑️</button>
+                        <button id="chatClose" class="chat-close">✖</button>
+                    </div>
+                </div>
+                <div class="chat-body">
+                    <div class="chat-quick-questions" id="chatQuickQuestions">
+                        <!-- Quick questions will be injected here based on active tab -->
+                    </div>
+                    <div class="chat-messages" id="chatMessages"></div>
+                </div>
+                <div class="chat-footer">
+                    <input type="text" id="chatInput" placeholder="Ask a question or click a quick prompt" />
+                    <button id="chatSend">Send</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="/static/dashboard.js"></script>

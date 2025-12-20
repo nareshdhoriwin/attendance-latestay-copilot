@@ -16,16 +16,15 @@
             <div class="header-content">
                 <div class="logo-section">
                     <div class="winwire-brand">
-                        <span class="brand-win">Win</span><span class="brand-attendance">Attendance</span>
+                        <span class="brand-win">Win</span><span class="brand-wire">Wire</span>
                     </div>
                     <p class="subtitle">AI-Powered Workforce Monitoring & Late-Stay Tracking</p>
                 </div>
                 <div class="header-actions">
-                    <button class="btn-refresh" onclick="loadDashboard()">
-                        <span>🔄</span> Refresh
-                    </button>
-                    <div class="date-selector">
-                        <input type="date" id="datePicker" onchange="loadDashboard()">
+                    <div class="header-right-section">
+                        <div class="winattendance-text">
+                            <span class="brand-win">Win</span><span class="brand-attendance">Attendance</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -45,6 +44,15 @@
             <button class="nav-tab" onclick="showPage('reports')" data-page="reports">
                 <span>📈</span> Reports
             </button>
+            <div class="date-execute-section" id="dateExecuteSection">
+                <div class="date-selector">
+                    <label for="datePicker" class="date-label">📅</label>
+                    <input type="date" id="datePicker" value="">
+                </div>
+                <button class="btn-execute" onclick="loadDashboard()">
+                    <span>▶</span> Execute
+                </button>
+            </div>
         </nav>
 
         <!-- Main Content -->
@@ -256,6 +264,36 @@
                     <h1>📈 Reports & Analytics</h1>
                     <p>Work balance analysis, WFO compliance, and project insights</p>
                 </div>
+                
+                <!-- WFO/WFH Compliance Summary Card -->
+                <section class="compliance-summary-section">
+                    <div class="compliance-summary-card" id="complianceSummaryCard">
+                        <h2>📋 WFO/WFH Compliance Summary</h2>
+                        <div class="compliance-stats-grid">
+                            <div class="compliance-stat">
+                                <span class="compliance-label">Total Employees</span>
+                                <span class="compliance-value" id="complianceTotalEmployees">-</span>
+                            </div>
+                            <div class="compliance-stat">
+                                <span class="compliance-label">Present Today</span>
+                                <span class="compliance-value" id="compliancePresent">-</span>
+                            </div>
+                            <div class="compliance-stat">
+                                <span class="compliance-label">WFO Compliance</span>
+                                <span class="compliance-value wfo-value" id="complianceWFO">-</span>
+                            </div>
+                            <div class="compliance-stat">
+                                <span class="compliance-label">WFH Compliance</span>
+                                <span class="compliance-value wfh-value" id="complianceWFH">-</span>
+                            </div>
+                            <div class="compliance-stat">
+                                <span class="compliance-label">Overall Status</span>
+                                <span class="compliance-value status-value" id="complianceStatus">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
                 <section class="project-section">
                     <h2>📊 Project Work Balance</h2>
                     <div class="project-cards" id="projectCards">

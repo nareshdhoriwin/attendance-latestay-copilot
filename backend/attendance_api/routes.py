@@ -138,12 +138,52 @@ async def get_attendance_records(
 ):
     """
     Get all attendance records for a date
+    Supports both single-day attendance.json and multi-day attendance_multi_day.json
     """
-    attendance_data = load_json_file("attendance.json")
     employees_data = load_json_file("employees.json")
-
-    # Normalize attendance data shape
-    file_date, attendance_records = normalize_attendance_data(attendance_data)
+    
+    # Try to load multi-day data first, fallback to single-day
+    attendance_records = []
+    file_date = None
+    
+    try:
+        multi_day_data = load_json_file("attendance_multi_day.json")
+        if isinstance(multi_day_data, dict) and "days" in multi_day_data:
+            # Multi-day format
+            target_date = date or multi_day_data.get("latest_date")
+            if target_date:
+                # Find the day data
+                day_data = next((d for d in multi_day_data["days"] if d.get("date") == target_date), None)
+                if day_data:
+                    attendance_records = day_data.get("attendance_records", [])
+                    file_date = day_data.get("date")
+        elif isinstance(multi_day_data, list):
+            # If it's a list of days
+            target_date = date
+            if target_date:
+                day_data = next((d for d in multi_day_data if d.get("date") == target_date), None)
+                if day_data:
+                    attendance_records = day_data.get("attendance_records", [])
+                    file_date = day_data.get("date")
+    except:
+        # Fallback to single-day file
+        try:
+            attendance_data = load_json_file("attendance.json")
+            file_date, attendance_records = normalize_attendance_data(attendance_data)
+        except:
+            attendance_records = []
+    
+    # If no date specified and we have multi-day data, use latest
+    if not date and not file_date:
+        try:
+            multi_day_data = load_json_file("attendance_multi_day.json")
+            if isinstance(multi_day_data, dict) and "days" in multi_day_data:
+                latest_day = multi_day_data["days"][-1] if multi_day_data["days"] else None
+                if latest_day:
+                    attendance_records = latest_day.get("attendance_records", [])
+                    file_date = latest_day.get("date")
+        except:
+            pass
 
     # Create employee lookup
     employee_lookup = {e["employee_id"]: e for e in employees_data.get("employees", [])}

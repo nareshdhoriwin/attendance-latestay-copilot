@@ -45,11 +45,13 @@ def is_after_8pm(time_str: str) -> bool:
         return False
 
 @router.get("/work-balance/project/{project_id}")
-async def get_work_balance_by_project(project_id: str):
+async def get_work_balance_by_project(
+    project_id: str,
+    date: Optional[str] = Query(None, description="Date in YYYY-MM-DD format")
+):
     """
     Get work balance report for a project
     """
-    attendance_data = load_json_file("attendance.json")
     employees_data = load_json_file("employees.json")
     projects_data = load_json_file("projects.json")
     
@@ -62,10 +64,59 @@ async def get_work_balance_by_project(project_id: str):
     project_employees = [e for e in employees_data["employees"] if e["project_id"] == project_id]
     employee_ids = {e["employee_id"] for e in project_employees}
     
+    # Try to load multi-day data first, fallback to single-day
+    attendance_records = []
+    file_date = None
+    
+    try:
+        multi_day_data = load_json_file("attendance_multi_day.json")
+        if isinstance(multi_day_data, dict) and "days" in multi_day_data:
+            # Multi-day format
+            target_date = date or multi_day_data.get("latest_date")
+            if target_date:
+                # Find the day data
+                day_data = next((d for d in multi_day_data["days"] if d.get("date") == target_date), None)
+                if day_data:
+                    attendance_records = day_data.get("attendance_records", [])
+                    file_date = day_data.get("date")
+        elif isinstance(multi_day_data, list):
+            # If it's a list of days
+            target_date = date
+            if target_date:
+                day_data = next((d for d in multi_day_data if d.get("date") == target_date), None)
+                if day_data:
+                    attendance_records = day_data.get("attendance_records", [])
+                    file_date = day_data.get("date")
+    except:
+        # Fallback to single-day file
+        try:
+            attendance_data = load_json_file("attendance.json")
+            if isinstance(attendance_data, dict) and "attendance_records" in attendance_data:
+                attendance_records = attendance_data["attendance_records"]
+                file_date = attendance_data.get("date")
+            elif isinstance(attendance_data, list):
+                attendance_records = attendance_data
+                file_date = None
+        except:
+            attendance_records = []
+            file_date = None
+    
+    # If no date specified and we have multi-day data, use latest
+    if not date and not file_date:
+        try:
+            multi_day_data = load_json_file("attendance_multi_day.json")
+            if isinstance(multi_day_data, dict) and "days" in multi_day_data:
+                latest_day = multi_day_data["days"][-1] if multi_day_data["days"] else None
+                if latest_day:
+                    attendance_records = latest_day.get("attendance_records", [])
+                    file_date = latest_day.get("date")
+        except:
+            pass
+    
     # Get attendance records for project employees
     project_attendance = [
-        r for r in attendance_data["attendance_records"]
-        if r["employee_id"] in employee_ids
+        r for r in attendance_records
+        if r.get("employee_id") in employee_ids
     ]
     
     # Calculate statistics
@@ -98,7 +149,8 @@ async def get_work_balance_by_project(project_id: str):
         "late_night_frequency": late_night_frequency,
         "late_night_count": late_night_count,
         "requires_night_shift": project.get("requires_night_shift", False),
-        "recommendation": recommendation
+        "recommendation": recommendation,
+        "date": date or file_date
     }
 
 @router.get("/wfo-compliance")
@@ -106,23 +158,140 @@ async def get_wfo_compliance(
     date: Optional[str] = Query(None, description="Date in YYYY-MM-DD format")
 ):
     """
-    Get Work From Office compliance report
+    Get Work From Office compliance report with separate WFO and WFH compliance.
+    This endpoint calculates compliance separately for WFO and WFH employees based on their Mode_of_work.
     """
-    attendance_data = load_json_file("attendance.json")
-    employees_data = load_json_file("employees.json")
+    try:
+        employees_data = load_json_file("employees.json")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error loading employees file: {str(e)}")
     
-    total_employees = len(employees_data["employees"])
-    present_employees = len(attendance_data["attendance_records"])
+    # Try to load multi-day data first, fallback to single-day
+    attendance_records = []
+    file_date = None
     
-    compliance_percentage = (present_employees / total_employees * 100) if total_employees > 0 else 0
+    try:
+        multi_day_data = load_json_file("attendance_multi_day.json")
+        if isinstance(multi_day_data, dict) and "days" in multi_day_data:
+            # Multi-day format
+            target_date = date or multi_day_data.get("latest_date")
+            if target_date:
+                # Find the day data
+                day_data = next((d for d in multi_day_data["days"] if d.get("date") == target_date), None)
+                if day_data:
+                    attendance_records = day_data.get("attendance_records", [])
+                    file_date = day_data.get("date")
+        elif isinstance(multi_day_data, list):
+            # If it's a list of days
+            target_date = date
+            if target_date:
+                day_data = next((d for d in multi_day_data if d.get("date") == target_date), None)
+                if day_data:
+                    attendance_records = day_data.get("attendance_records", [])
+                    file_date = day_data.get("date")
+    except:
+        # Fallback to single-day file
+        try:
+            attendance_data = load_json_file("attendance.json")
+            if isinstance(attendance_data, dict) and "attendance_records" in attendance_data:
+                attendance_records = attendance_data["attendance_records"]
+                file_date = attendance_data.get("date")
+            elif isinstance(attendance_data, list):
+                attendance_records = attendance_data
+                file_date = None
+        except:
+            attendance_records = []
+            file_date = None
+    
+    # If no date specified and we have multi-day data, use latest
+    if not date and not file_date:
+        try:
+            multi_day_data = load_json_file("attendance_multi_day.json")
+            if isinstance(multi_day_data, dict) and "days" in multi_day_data:
+                latest_day = multi_day_data["days"][-1] if multi_day_data["days"] else None
+                if latest_day:
+                    attendance_records = latest_day.get("attendance_records", [])
+                    file_date = latest_day.get("date")
+        except:
+            pass
+    
+    # Create employee lookup with mode of work - separate WFO and WFH employees
+    employee_lookup = {}
+    wfo_employees = []  # List of employee IDs who should work from office
+    wfh_employees = []  # List of employee IDs who should work from home
+    
+    for emp in employees_data.get("employees", []):
+        emp_id = emp.get("employee_id")
+        if not emp_id:
+            continue  # Skip employees without ID
+        
+        employee_lookup[emp_id] = emp
+        
+        # Get Mode_of_work field (case-insensitive, default to WFO if not specified)
+        mode = emp.get("Mode_of_work", "WFO")
+        if isinstance(mode, str):
+            mode = mode.upper().strip()
+        else:
+            mode = "WFO"  # Default to WFO if not a string
+        
+        # Categorize employees by work mode
+        if mode == "WFO":
+            wfo_employees.append(emp_id)
+        elif mode == "WFH":
+            wfh_employees.append(emp_id)
+        else:
+            # If mode is neither WFO nor WFH, default to WFO
+            wfo_employees.append(emp_id)
+    
+    # Get present employee IDs from attendance records
+    present_employee_ids = set()
+    for record in attendance_records:
+        emp_id = record.get("employee_id")
+        if emp_id:
+            present_employee_ids.add(emp_id)
+    
+    # Calculate WFO and WFH present counts
+    wfo_total = len(wfo_employees)
+    wfo_present = len([eid for eid in wfo_employees if eid in present_employee_ids])
+    wfo_absent = wfo_total - wfo_present
+    
+    wfh_total = len(wfh_employees)
+    wfh_present = len([eid for eid in wfh_employees if eid in present_employee_ids])
+    wfh_absent = wfh_total - wfh_present
+    
+    # Calculate compliance as percentage of total present employees (so they sum to 100%)
+    total_present = len(present_employee_ids)
+    wfo_compliance_pct = (wfo_present / total_present * 100) if total_present > 0 else 0.0
+    wfh_compliance_pct = (wfh_present / total_present * 100) if total_present > 0 else 0.0
+    
+    # Overall compliance: Total employees present vs total employees
+    total_employees = len(employees_data.get("employees", []))
+    present_employees = len(present_employee_ids)
+    absent_employees = total_employees - present_employees
+    overall_compliance = (present_employees / total_employees * 100) if total_employees > 0 else 0.0
+    
+    # Determine status
+    status = "Compliant" if overall_compliance >= 80 else "Non-Compliant"
     
     return {
-        "date": date or attendance_data["date"],
+        "date": date or file_date,
         "total_employees": total_employees,
         "present_employees": present_employees,
-        "absent_employees": total_employees - present_employees,
-        "compliance_percentage": round(compliance_percentage, 2),
-        "status": "Compliant" if compliance_percentage >= 80 else "Non-Compliant"
+        "absent_employees": absent_employees,
+        "compliance_percentage": round(overall_compliance, 2),
+        # WFO-specific metrics
+        "wfo_total": wfo_total,
+        "wfo_present": wfo_present,
+        "wfo_absent": wfo_absent,
+        "wfo_compliance_percentage": round(wfo_compliance_pct, 2),
+        # WFH-specific metrics
+        "wfh_total": wfh_total,
+        "wfh_present": wfh_present,
+        "wfh_absent": wfh_absent,
+        "wfh_compliance_percentage": round(wfh_compliance_pct, 2),
+        # Additional info for verification
+        "total_present": total_present,
+        "status": status
     }
 
 @router.get("/wellbeing-recommendations")

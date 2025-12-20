@@ -34,19 +34,25 @@ async def get_late_stay_after_8pm(
     date: Optional[str] = Query(None, description="Date in YYYY-MM-DD format")
 ):
     """
-    Get employees who stayed after 8:00 PM
+    Get employees who stayed after 8:00 PM (only WFO employees)
     """
     attendance_data = load_json_file("attendance.json")
     employees_data = load_json_file("employees.json")
     
-    # Create employee lookup
+    # Helper function to get mode_of_work (handles both "Mode_of_work" and "mode_of_work")
+    def get_mode(emp):
+        mode = emp.get("Mode_of_work") or emp.get("mode_of_work") or ""
+        return mode.upper()
+    
+    # Create employee lookup with mode_of_work filter
     employee_lookup = {e["employee_id"]: e for e in employees_data["employees"]}
     
     late_stay_employees = []
     
     for record in attendance_data["attendance_records"]:
-        if is_after_8pm(record["checkout_time"]):
-            employee = employee_lookup.get(record["employee_id"], {})
+        employee = employee_lookup.get(record["employee_id"], {})
+        # Only consider WFO employees who stayed after 8:00 PM
+        if get_mode(employee) == "WFO" and is_after_8pm(record["checkout_time"]):
             late_stay_employees.append({
                 "employee_id": record["employee_id"],
                 "name": employee.get("name", ""),

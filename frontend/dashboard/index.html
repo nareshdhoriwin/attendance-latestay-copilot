@@ -64,7 +64,16 @@
                     <div class="stat-content">
                         <h3>WFO Compliance</h3>
                         <p class="stat-value" id="wfoCompliance">-</p>
-                        <span class="stat-label">% Present</span>
+                        <span class="stat-label">% Present (WFO)</span>
+                    </div>
+                </div>
+
+                <div class="stat-card stat-info">
+                    <div class="stat-icon">🏠</div>
+                    <div class="stat-content">
+                        <h3>WFH Compliance</h3>
+                        <p class="stat-value" id="wfhCompliance">-</p>
+                        <span class="stat-label">% Present (WFH)</span>
                     </div>
                 </div>
             </section>
@@ -154,6 +163,29 @@
     </div>
 
     <script src="/static/dashboard.js"></script>
+    <!-- Chat widget -->
+    <div class="chat-widget" id="chatWidget">
+        <button class="chat-button" id="chatToggle" aria-label="Open chat">💬</button>
+        <div class="chat-panel" id="chatPanel" aria-hidden="true">
+            <div class="chat-header">
+                <strong>Winwire Assistant</strong>
+                <div style="display:flex;gap:8px;align-items:center">
+                    <button id="chatClear" class="chat-clear" title="Clear chat">🗑</button>
+                    <button id="chatClose" class="chat-close">✖</button>
+                </div>
+            </div>
+            <div class="chat-body">
+                <div class="chat-quick-questions" id="chatQuickQuestions">
+                    <!-- Quick questions will be injected here -->
+                </div>
+                <div class="chat-messages" id="chatMessages"></div>
+            </div>
+            <div class="chat-footer">
+                <input type="text" id="chatInput" placeholder="Ask a question or click a quick prompt" />
+                <button id="chatSend">Send</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
 

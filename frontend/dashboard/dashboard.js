@@ -11,12 +11,33 @@ let currentWfoCompliance = null;
 let currentProjectData = {};
 
 // Initialize dashboard on load
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     // Set today's date as default
     const today = new Date().toISOString().split('T')[0];
-    document.getElementById('datePicker').value = today;
+    const datePicker = document.getElementById('datePicker');
     
-    loadDashboard();
+    // Set today's date in the date picker
+    if (datePicker) {
+        datePicker.value = today;
+        // Also set max date to today to prevent selecting future dates
+        datePicker.max = today;
+    }
+    
+    // Show date-execute section initially (Dashboard is active by default)
+    const dateExecuteSection = document.getElementById('dateExecuteSection');
+    if (dateExecuteSection) {
+        dateExecuteSection.style.display = 'flex';
+    }
+    
+    // Initialize chat widget
+    try { 
+        initChatWidget(); 
+    } catch (e) { 
+        console.warn('Chat init failed', e); 
+    }
+    
+    // Load dashboard with today's date
+    await loadDashboard();
 });
 
 // Navigation function to switch between pages
@@ -45,6 +66,16 @@ function showPage(pageId) {
         selectedTab.classList.add('active');
     }
     
+    // Show/hide date-execute section based on active tab
+    const dateExecuteSection = document.getElementById('dateExecuteSection');
+    if (dateExecuteSection) {
+        if (pageId === 'dashboard') {
+            dateExecuteSection.style.display = 'flex';
+        } else {
+            dateExecuteSection.style.display = 'none';
+        }
+    }
+    
     // Update content when switching pages
     if (pageId === 'attendance' && currentAttendanceData) {
         updateAttendanceTable(currentAttendanceData);
@@ -53,14 +84,25 @@ function showPage(pageId) {
         updateLateStayTable(currentLateStayData);
     }
     if (pageId === 'reports') {
-        // Reload project data for reports page
+        // Reload project data and compliance summary for reports page
         loadProjectReports();
+        loadComplianceSummary();
     }
 }
 
 // Load all dashboard data
 async function loadDashboard() {
-    const date = document.getElementById('datePicker').value;
+    const datePicker = document.getElementById('datePicker');
+    let date = datePicker ? datePicker.value : null;
+    
+    // If no date is selected, default to today
+    if (!date) {
+        const today = new Date().toISOString().split('T')[0];
+        date = today;
+        if (datePicker) {
+            datePicker.value = today;
+        }
+    }
     
     try {
         // Load all data in parallel
@@ -76,8 +118,8 @@ async function loadDashboard() {
             fetch(`${API_BASE_URL}/late-stay/after-8pm${date ? `?date=${date}` : ''}`).then(r => r.json()),
             fetch(`${API_BASE_URL}/late-stay/women-after-8pm${date ? `?date=${date}` : ''}`).then(r => r.json()),
             fetch(`${API_BASE_URL}/reports/wfo-compliance${date ? `?date=${date}` : ''}`).then(r => r.json()),
-            fetch(`${API_BASE_URL}/reports/work-balance/project/P101`).then(r => r.json()),
-            fetch(`${API_BASE_URL}/reports/work-balance/project/P102`).then(r => r.json())
+            fetch(`${API_BASE_URL}/reports/work-balance/project/P101${date ? `?date=${date}` : ''}`).then(r => r.json()),
+            fetch(`${API_BASE_URL}/reports/work-balance/project/P102${date ? `?date=${date}` : ''}`).then(r => r.json())
         ]);
 
         // Normalize API shapes: backend may return an array or an object
@@ -96,6 +138,19 @@ async function loadDashboard() {
         currentProjectData = { 'P101': projectP101, 'P102': projectP102 };
         originalAttendanceData = JSON.parse(JSON.stringify(attendanceData));
         originalLateStayData = JSON.parse(JSON.stringify(lateStayData));
+        
+        // Debug: Log compliance data to verify correct values
+        console.log('WFO/WFH Compliance API Response:', {
+            wfo_total: wfoCompliance?.wfo_total,
+            wfo_present: wfoCompliance?.wfo_present,
+            wfo_compliance_percentage: wfoCompliance?.wfo_compliance_percentage,
+            wfh_total: wfoCompliance?.wfh_total,
+            wfh_present: wfoCompliance?.wfh_present,
+            wfh_compliance_percentage: wfoCompliance?.wfh_compliance_percentage,
+            overall_compliance: wfoCompliance?.compliance_percentage,
+            full_response: wfoCompliance
+        });
+        
         updateStats(attendanceData, lateStayData, womenLateStayData, wfoCompliance);
         
         // Get active page
@@ -137,21 +192,49 @@ function updateStats(attendanceData, lateStayData, womenLateStayData, wfoComplia
     document.getElementById('lateStayCount').textContent = lateStayData.total_count || 0;
     document.getElementById('womenLateStay').textContent = womenLateStayData.count || 0;
 
-    // Prefer mode-specific WFO compliance if we have WFO employees, else fallback to overall compliance
-    const wfoTotal = wfoCompliance.wfo_total ?? 0;
-    const overallPct = wfoCompliance.compliance_percentage ?? 0;
-    const wfoPct = (wfoTotal > 0 && typeof wfoCompliance.wfo_compliance_percentage === 'number')
-        ? wfoCompliance.wfo_compliance_percentage
-        : overallPct;
-    document.getElementById('wfoCompliance').textContent = formatPercent(wfoPct);
+    // WFO compliance: use mode-specific percentage from API
+    // API returns: wfo_total, wfo_present, wfo_compliance_percentage
+    const wfoTotal = wfoCompliance?.wfo_total ?? 0;
+    const wfoPresent = wfoCompliance?.wfo_present ?? 0;
+    let wfoPct = 0;
+    
+    // Priority: Use API-calculated percentage, then fallback to manual calculation
+    if (wfoTotal > 0) {
+        if (typeof wfoCompliance?.wfo_compliance_percentage === 'number') {
+            wfoPct = wfoCompliance.wfo_compliance_percentage;
+        } else if (typeof wfoCompliance?.compliance_percentage === 'number') {
+            // Fallback to overall compliance if WFO-specific not available
+            wfoPct = wfoCompliance.compliance_percentage;
+        } else {
+            // Manual calculation as last resort
+            wfoPct = (wfoPresent / wfoTotal) * 100;
+        }
+    }
+    
+    const wfoEl = document.getElementById('wfoCompliance');
+    if (wfoEl) {
+        wfoEl.textContent = formatPercent(wfoPct);
+    }
 
-    // WFH compliance: show mode-specific percentage if there are WFH employees, else 0%
+    // WFH compliance: use mode-specific percentage from API
+    // API returns: wfh_total, wfh_present, wfh_compliance_percentage
     const wfhEl = document.getElementById('wfhCompliance');
     if (wfhEl) {
-        const wfhTotal = wfoCompliance.wfh_total ?? 0;
-        const wfhPct = (wfhTotal > 0 && typeof wfoCompliance.wfh_compliance_percentage === 'number')
-            ? wfoCompliance.wfh_compliance_percentage
-            : 0;
+        const wfhTotal = wfoCompliance?.wfh_total ?? 0;
+        const wfhPresent = wfoCompliance?.wfh_present ?? 0;
+        let wfhPct = 0;
+        
+        // Priority: Use API-calculated percentage, then fallback to manual calculation
+        if (wfhTotal > 0) {
+            if (typeof wfoCompliance?.wfh_compliance_percentage === 'number') {
+                wfhPct = wfoCompliance.wfh_compliance_percentage;
+            } else {
+                // Manual calculation as fallback
+                wfhPct = (wfhPresent / wfhTotal) * 100;
+            }
+        }
+        // If wfhTotal is 0, wfhPct remains 0 (no WFH employees)
+        
         wfhEl.textContent = formatPercent(wfhPct);
     }
 }
@@ -258,7 +341,14 @@ function updateCharts(attendanceData, lateStayData) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            aspectRatio: 2,
+            layout: {
+                padding: {
+                    top: 10,
+                    bottom: 10,
+                    left: 10,
+                    right: 10
+                }
+            },
             plugins: {
                 legend: {
                     labels: {
@@ -325,7 +415,12 @@ function updateCharts(attendanceData, lateStayData) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            aspectRatio: 1.5,
+            layout: {
+                padding: {
+                    top: 10,
+                    bottom: 10
+                }
+            },
             plugins: {
                 legend: {
                     position: 'bottom',
@@ -358,8 +453,14 @@ function updateProjectCards(projects) {
     projects.forEach(project => {
         const card = document.createElement('div');
         card.className = 'project-card';
+        const dateDisplay = project.date ? `<div class="project-date">📅 Date: ${project.date}</div>` : '';
+        const lateStayCount = project.late_stay_count !== undefined ? project.late_stay_count : 0;
+        const lateStayEmployees = project.late_stay_employees || [];
+        const womenLateStay = lateStayEmployees.filter(e => e.gender === 'Female').length;
+        
         card.innerHTML = `
             <h3>${project.project_name}</h3>
+            ${dateDisplay}
             <div class="project-metric">
                 <span class="project-metric-label">Average Work Hours</span>
                 <span class="project-metric-value">${project.average_work_hours}</span>
@@ -376,6 +477,19 @@ function updateProjectCards(projects) {
                 <span class="project-metric-label">Night Shift Required</span>
                 <span class="project-metric-value">${project.requires_night_shift ? 'Yes' : 'No'}</span>
             </div>
+            <div class="project-late-stay-section">
+                <h4>🌙 Late Stay Statistics</h4>
+                <div class="project-late-stay-stats">
+                    <div class="late-stay-stat">
+                        <span class="late-stay-label">Total Late Stay</span>
+                        <span class="late-stay-value">${lateStayCount}</span>
+                    </div>
+                    <div class="late-stay-stat">
+                        <span class="late-stay-label">Women Late Stay</span>
+                        <span class="late-stay-value">${womenLateStay}</span>
+                    </div>
+                </div>
+            </div>
             <div class="project-recommendation">
                 <strong>💡 Recommendation:</strong> ${project.recommendation}
             </div>
@@ -387,14 +501,80 @@ function updateProjectCards(projects) {
 // Load project reports for reports page
 async function loadProjectReports() {
     try {
-        const [projectP101, projectP102] = await Promise.all([
-            fetch(`${API_BASE_URL}/reports/work-balance/project/P101`).then(r => r.json()),
-            fetch(`${API_BASE_URL}/reports/work-balance/project/P102`).then(r => r.json())
+        // Get the date from the date picker (same as dashboard)
+        const datePicker = document.getElementById('datePicker');
+        const date = datePicker ? datePicker.value : null;
+        
+        // Load project work balance and late stay data
+        const [projectP101, projectP102, lateStayData] = await Promise.all([
+            fetch(`${API_BASE_URL}/reports/work-balance/project/P101${date ? `?date=${date}` : ''}`).then(r => r.json()),
+            fetch(`${API_BASE_URL}/reports/work-balance/project/P102${date ? `?date=${date}` : ''}`).then(r => r.json()),
+            fetch(`${API_BASE_URL}/late-stay/after-8pm${date ? `?date=${date}` : ''}`).then(r => r.json())
         ]);
+        
+        // Add late stay statistics to each project
+        const lateStayByProject = {};
+        if (lateStayData && lateStayData.late_stay_employees) {
+            lateStayData.late_stay_employees.forEach(emp => {
+                const projectId = emp.project_id;
+                if (!lateStayByProject[projectId]) {
+                    lateStayByProject[projectId] = {
+                        count: 0,
+                        employees: []
+                    };
+                }
+                lateStayByProject[projectId].count++;
+                lateStayByProject[projectId].employees.push(emp);
+            });
+        }
+        
+        // Add late stay data to projects
+        if (lateStayByProject['P101']) {
+            projectP101.late_stay_count = lateStayByProject['P101'].count;
+            projectP101.late_stay_employees = lateStayByProject['P101'].employees;
+        } else {
+            projectP101.late_stay_count = 0;
+            projectP101.late_stay_employees = [];
+        }
+        
+        if (lateStayByProject['P102']) {
+            projectP102.late_stay_count = lateStayByProject['P102'].count;
+            projectP102.late_stay_employees = lateStayByProject['P102'].employees;
+        } else {
+            projectP102.late_stay_count = 0;
+            projectP102.late_stay_employees = [];
+        }
+        
         updateProjectCards([projectP101, projectP102]);
     } catch (error) {
         console.error('Error loading project reports:', error);
         showError('Failed to load project reports.');
+    }
+}
+
+async function loadComplianceSummary() {
+    try {
+        // Get the date from the date picker
+        const datePicker = document.getElementById('datePicker');
+        const date = datePicker ? datePicker.value : null;
+        
+        const complianceData = await fetch(`${API_BASE_URL}/reports/wfo-compliance${date ? `?date=${date}` : ''}`).then(r => r.json());
+        
+        // Update compliance summary card
+        document.getElementById('complianceTotalEmployees').textContent = complianceData.total_employees || '-';
+        document.getElementById('compliancePresent').textContent = complianceData.present_employees || '-';
+        document.getElementById('complianceWFO').textContent = `${complianceData.wfo_compliance_percentage || 0}%`;
+        document.getElementById('complianceWFH').textContent = `${complianceData.wfh_compliance_percentage || 0}%`;
+        
+        const statusEl = document.getElementById('complianceStatus');
+        if (statusEl) {
+            const status = complianceData.status || 'Unknown';
+            statusEl.textContent = status;
+            statusEl.className = 'compliance-value status-value ' + (status === 'Compliant' ? 'status-compliant' : 'status-non-compliant');
+        }
+    } catch (error) {
+        console.error('Error loading compliance summary:', error);
+        showError('Failed to load compliance summary.');
     }
 }
 
@@ -646,6 +826,17 @@ function initChatWidget() {
     send.addEventListener('click', () => handleSendMessage());
     input.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleSendMessage(); });
 
+    // Close chat panel when clicking outside
+    document.addEventListener('click', (e) => {
+        const isClickInsidePanel = panel.contains(e.target);
+        const isClickOnToggle = toggle.contains(e.target);
+        const isPanelOpen = panel.style.display === 'flex' || panel.getAttribute('aria-hidden') === 'false';
+        
+        if (!isClickInsidePanel && !isClickOnToggle && isPanelOpen) {
+            toggleChatPanel(false);
+        }
+    });
+
     // welcome message
     addMessage('bot', 'Hello 👋 Welcome to Win chatbot I can answer questions related to attendance and late stay. Click a quick question or type your own.');
 }
@@ -817,8 +1008,6 @@ function handleSendMessage() {
     }
 }
 
-// Initialize chat when dashboard loads
-document.addEventListener('DOMContentLoaded', () => {
-    try { initChatWidget(); } catch (e) { console.warn('Chat init failed', e); }
-});
+// Initialize chat when dashboard loads (will be called after main initialization)
+// Chat widget initialization is handled in the main DOMContentLoaded above
 

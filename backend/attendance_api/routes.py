@@ -3,9 +3,8 @@ Attendance API Routes
 """
 from fastapi import APIRouter, HTTPException, Query
 from typing import Optional
-from datetime import datetime, date
+from datetime import datetime
 import json
-import os
 from pathlib import Path
 import traceback
 
@@ -68,15 +67,6 @@ def calculate_hours(checkin: str, checkout: str) -> str:
 
 def _log_exception(exc: Exception, name: str = "attendance"):
     """Log exceptions to a file for debugging"""
-    try:
-        log_path = DATA_DIR / f"{name}_error.log"
-        with open(log_path, 'a', encoding='utf-8') as lf:
-            lf.write(f"\n--- {datetime.now().isoformat()} ---\n")
-            lf.write(''.join(traceback.format_exception(type(exc), exc, exc.__traceback__)))
-    except Exception:
-        pass
-
-def _log_exception(exc: Exception, name: str = "attendance"):
     try:
         log_path = DATA_DIR / f"{name}_error.log"
         with open(log_path, 'a', encoding='utf-8') as lf:

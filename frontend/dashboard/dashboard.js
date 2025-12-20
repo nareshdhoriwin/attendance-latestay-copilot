@@ -12,57 +12,42 @@ let currentProjectData = {};
 // Cache for compliance data for CSV export
 let currentComplianceData = null;
 
-// Initialize dashboard on load
 document.addEventListener('DOMContentLoaded', async () => {
-    // Set today's date as default
     const today = new Date().toISOString().split('T')[0];
     const datePicker = document.getElementById('datePicker');
     
-    // Set today's date in the date picker
     if (datePicker) {
         datePicker.value = today;
-        // Also set max date to today to prevent selecting future dates
         datePicker.max = today;
     }
     
-    // Show date-execute section initially (Dashboard is active by default)
     const dateExecuteSection = document.getElementById('dateExecuteSection');
     if (dateExecuteSection) {
         dateExecuteSection.style.display = 'flex';
     }
     
-    // Initialize chat widget
     try { 
         initChatWidget(); 
     } catch (e) { 
         console.warn('Chat init failed', e); 
     }
     
-    // Load dashboard with today's date
     await loadDashboard();
 });
 
 // Navigation function to switch between pages
 function showPage(pageId) {
-    // Hide all pages
     const pages = document.querySelectorAll('.page-content');
-    pages.forEach(page => {
-        page.classList.remove('active');
-    });
+    pages.forEach(page => page.classList.remove('active'));
     
-    // Remove active class from all tabs
     const tabs = document.querySelectorAll('.nav-tab');
-    tabs.forEach(tab => {
-        tab.classList.remove('active');
-    });
+    tabs.forEach(tab => tab.classList.remove('active'));
     
-    // Show selected page
     const selectedPage = document.getElementById(`page-${pageId}`);
     if (selectedPage) {
         selectedPage.classList.add('active');
     }
     
-    // Add active class to selected tab
     const selectedTab = document.querySelector(`[data-page="${pageId}"]`);
     if (selectedTab) {
         selectedTab.classList.add('active');
@@ -77,8 +62,6 @@ function showPage(pageId) {
             dateExecuteSection.style.display = 'none';
         }
     }
-    
-    // No need to update questions - all questions are shown on all tabs
     
     // Update content when switching pages
     if (pageId === 'attendance' && currentAttendanceData) {
@@ -140,41 +123,21 @@ async function loadDashboard() {
         currentWfoCompliance = wfoCompliance;
         // Cache project reports for quick dashboard questions
         currentProjectData = { 'P101': projectP101, 'P102': projectP102 };
-        originalAttendanceData = JSON.parse(JSON.stringify(attendanceData));
-        originalLateStayData = JSON.parse(JSON.stringify(lateStayData));
-        
-        // Debug: Log compliance data to verify correct values
-        console.log('WFO/WFH Compliance API Response:', {
-            wfo_total: wfoCompliance?.wfo_total,
-            wfo_present: wfoCompliance?.wfo_present,
-            wfo_compliance_percentage: wfoCompliance?.wfo_compliance_percentage,
-            wfh_total: wfoCompliance?.wfh_total,
-            wfh_present: wfoCompliance?.wfh_present,
-            wfh_compliance_percentage: wfoCompliance?.wfh_compliance_percentage,
-            overall_compliance: wfoCompliance?.compliance_percentage,
-            full_response: wfoCompliance
-        });
         
         updateStats(attendanceData, lateStayData, womenLateStayData, wfoCompliance);
         
-        // Get active page
         const activePage = document.querySelector('.page-content.active');
         const activePageId = activePage ? activePage.id : 'page-dashboard';
         
-        // Update tables (only if on relevant pages)
         if (activePageId === 'page-attendance' || activePageId === 'page-dashboard') {
             updateAttendanceTable(attendanceData);
         }
         if (activePageId === 'page-late-stay' || activePageId === 'page-dashboard') {
             updateLateStayTable(lateStayData);
         }
-        
-        // Update charts (only on dashboard page)
         if (activePageId === 'page-dashboard') {
             updateCharts(attendanceData, lateStayData);
         }
-        
-        // Update project cards (only on reports page)
         if (activePageId === 'page-reports') {
             updateProjectCards([projectP101, projectP102]);
         }
@@ -588,6 +551,16 @@ async function loadComplianceSummary() {
     }
 }
 
+// Helper function to escape CSV values
+function escapeCSV(value) {
+    if (value === null || value === undefined) return '';
+    const stringValue = String(value);
+    if (stringValue.includes(',') || stringValue.includes('"') || stringValue.includes('\n')) {
+        return `"${stringValue.replace(/"/g, '""')}"`;
+    }
+    return stringValue;
+}
+
 // Download reports as CSV
 async function downloadReportsCSV() {
     try {
@@ -602,82 +575,236 @@ async function downloadReportsCSV() {
             day: 'numeric' 
         }) : 'N/A';
         
-        // Build CSV content
-        let csvContent = `Reports Export - ${formattedDate}\n`;
-        csvContent += `Generated Date: ${new Date().toLocaleString('en-US')}\n\n`;
+        // Build CSV content with clean Excel-friendly formatting
+        let csvContent = '';
         
-        // Compliance Summary Section
-        csvContent += `=== WFO/WFH Compliance Summary ===\n`;
+        // Header Section (using first column for headers)
+        csvContent += `WinAttendance Reports Export,,,\n`;
+        csvContent += `Report Date,${escapeCSV(formattedDate)},,\n`;
+        csvContent += `Generated On,${escapeCSV(new Date().toLocaleString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric', 
+            hour: '2-digit', 
+            minute: '2-digit' 
+        }))},,\n`;
+        csvContent += `,,\n`;
+        
+        // SECTION 1: EXECUTIVE SUMMARY
+        csvContent += `EXECUTIVE SUMMARY,,,\n`;
+        csvContent += `,,\n`;
+        
         if (currentComplianceData) {
-            csvContent += `Date,${currentComplianceData.date || date}\n`;
-            csvContent += `Total Employees,${currentComplianceData.total_employees || 0}\n`;
-            csvContent += `Present Employees,${currentComplianceData.present_employees || 0}\n`;
-            csvContent += `Absent Employees,${currentComplianceData.absent_employees || 0}\n`;
-            csvContent += `Overall Compliance,${currentComplianceData.compliance_percentage || 0}%\n`;
-            csvContent += `Status,${currentComplianceData.status || 'Unknown'}\n\n`;
+            csvContent += `Metric,Value,,\n`;
+            csvContent += `Report Date,${escapeCSV(currentComplianceData.date || date)},,\n`;
+            csvContent += `Total Employees,${currentComplianceData.total_employees || 0},,\n`;
+            csvContent += `Present Employees,${currentComplianceData.present_employees || 0},,\n`;
+            csvContent += `Absent Employees,${currentComplianceData.absent_employees || 0},,\n`;
+            csvContent += `Overall Compliance Rate,${currentComplianceData.compliance_percentage || 0}%,,\n`;
+            csvContent += `Compliance Status,${escapeCSV(currentComplianceData.status || 'Unknown')},,\n`;
             
-            csvContent += `--- WFO Compliance ---\n`;
-            csvContent += `WFO Total,${currentComplianceData.wfo_total || 0}\n`;
-            csvContent += `WFO Present,${currentComplianceData.wfo_present || 0}\n`;
-            csvContent += `WFO Absent,${currentComplianceData.wfo_absent || 0}\n`;
-            csvContent += `WFO Compliance Percentage,${currentComplianceData.wfo_compliance_percentage || 0}%\n\n`;
+            if (currentAttendanceData && currentAttendanceData.attendance_records) {
+                csvContent += `Total Attendance Records,${currentAttendanceData.attendance_records.length},,\n`;
+            }
             
-            csvContent += `--- WFH Compliance ---\n`;
-            csvContent += `WFH Total,${currentComplianceData.wfh_total || 0}\n`;
-            csvContent += `WFH Present,${currentComplianceData.wfh_present || 0}\n`;
-            csvContent += `WFH Absent,${currentComplianceData.wfh_absent || 0}\n`;
-            csvContent += `WFH Compliance Percentage,${currentComplianceData.wfh_compliance_percentage || 0}%\n\n`;
-        } else {
-            csvContent += `No compliance data available\n\n`;
+            if (currentLateStayData) {
+                csvContent += `Total Late Stay Employees,${currentLateStayData.total_count || 0},,\n`;
+                const womenLateStay = currentLateStayData.late_stay_employees 
+                    ? currentLateStayData.late_stay_employees.filter(e => e.gender === 'Female').length 
+                    : 0;
+                csvContent += `Women Late Stay Count,${womenLateStay},,\n`;
+            }
         }
+        csvContent += `,,\n`;
+        csvContent += `,,\n`;
         
-        // Project Reports Section
-        csvContent += `=== Project Work Balance Reports ===\n\n`;
+        // SECTION 2: WFO/WFH COMPLIANCE DETAILS
+        csvContent += `WFO/WFH COMPLIANCE DETAILS,,,\n`;
+        csvContent += `,,\n`;
+        
+        if (currentComplianceData) {
+            // Overall Compliance Table
+            csvContent += `OVERALL COMPLIANCE,,,\n`;
+            csvContent += `Category,Total,Present,Absent,Compliance %\n`;
+            csvContent += `All Employees,${currentComplianceData.total_employees || 0},${currentComplianceData.present_employees || 0},${currentComplianceData.absent_employees || 0},${currentComplianceData.compliance_percentage || 0}%\n`;
+            csvContent += `,,\n`;
+            
+            // WFO Compliance Table
+            csvContent += `WFO (Work From Office) COMPLIANCE,,,\n`;
+            csvContent += `Category,Total,Present,Absent,Compliance %\n`;
+            csvContent += `WFO Employees,${currentComplianceData.wfo_total || 0},${currentComplianceData.wfo_present || 0},${currentComplianceData.wfo_absent || 0},${currentComplianceData.wfo_compliance_percentage || 0}%\n`;
+            csvContent += `,,\n`;
+            
+            // WFH Compliance Table
+            csvContent += `WFH (Work From Home) COMPLIANCE,,,\n`;
+            csvContent += `Category,Total,Present,Absent,Compliance %\n`;
+            csvContent += `WFH Employees,${currentComplianceData.wfh_total || 0},${currentComplianceData.wfh_present || 0},${currentComplianceData.wfh_absent || 0},${currentComplianceData.wfh_compliance_percentage || 0}%\n`;
+        } else {
+            csvContent += `No compliance data available,,\n`;
+        }
+        csvContent += `,,\n`;
+        csvContent += `,,\n`;
+        
+        // SECTION 3: ATTENDANCE RECORDS
+        csvContent += `ATTENDANCE RECORDS,,,\n`;
+        csvContent += `,,\n`;
+        
+        if (currentAttendanceData && currentAttendanceData.attendance_records && currentAttendanceData.attendance_records.length > 0) {
+            csvContent += `Employee ID,Employee Name,Check-in Time,Check-out Time,Total Hours,Status\n`;
+            currentAttendanceData.attendance_records.forEach(record => {
+                const isLate = record.checkin_time > '09:00';
+                const isLateStay = record.checkout_time >= '20:00';
+                let status = 'On Time';
+                if (isLateStay) {
+                    status = 'Late Stay';
+                } else if (isLate) {
+                    status = 'Late Arrival';
+                }
+                
+                csvContent += `${escapeCSV(record.employee_id)},${escapeCSV(record.name || '-')},${escapeCSV(record.checkin_time)},${escapeCSV(record.checkout_time)},${escapeCSV(record.total_hours || '-')},${escapeCSV(status)}\n`;
+            });
+        } else {
+            csvContent += `No attendance records available,,\n`;
+        }
+        csvContent += `,,\n`;
+        csvContent += `,,\n`;
+        
+        // SECTION 4: LATE STAY EMPLOYEES
+        csvContent += `LATE STAY EMPLOYEES (After 8:00 PM),,,\n`;
+        csvContent += `,,\n`;
+        
+        if (currentLateStayData && currentLateStayData.late_stay_employees && currentLateStayData.late_stay_employees.length > 0) {
+            csvContent += `Employee ID,Employee Name,Gender,Checkout Time,Project ID,Office Location\n`;
+            currentLateStayData.late_stay_employees.forEach(emp => {
+                csvContent += `${escapeCSV(emp.employee_id)},${escapeCSV(emp.name)},${escapeCSV(emp.gender)},${escapeCSV(emp.checkout_time)},${escapeCSV(emp.project_id)},${escapeCSV(emp.office || '-')}\n`;
+            });
+            
+            // Late Stay Summary
+            csvContent += `,,\n`;
+            csvContent += `LATE STAY SUMMARY,,,\n`;
+            csvContent += `Metric,Count,,\n`;
+            csvContent += `Total Late Stay Employees,${currentLateStayData.total_count || 0},,\n`;
+            const maleCount = currentLateStayData.late_stay_employees.filter(e => e.gender === 'Male').length;
+            const femaleCount = currentLateStayData.late_stay_employees.filter(e => e.gender === 'Female').length;
+            csvContent += `Male Employees,${maleCount},,\n`;
+            csvContent += `Female Employees,${femaleCount},,\n`;
+        } else {
+            csvContent += `No late stay employees recorded,,\n`;
+        }
+        csvContent += `,,\n`;
+        csvContent += `,,\n`;
+        
+        // SECTION 5: PROJECT WORK BALANCE REPORTS
+        csvContent += `PROJECT WORK BALANCE REPORTS,,,\n`;
+        csvContent += `,,\n`;
         
         // Load project data if not already cached
         if (!currentProjectData || Object.keys(currentProjectData).length === 0) {
             await loadProjectReports();
         }
         
-        // Export each project
+        // Project Summary Table
+        csvContent += `PROJECT SUMMARY,,,\n`;
+        csvContent += `Project ID,Project Name,Total Employees,Average Work Hours,Late Night Frequency,Late Stay Count,Women Late Stay,Requires Night Shift\n`;
+        
         for (const projectId in currentProjectData) {
             const project = currentProjectData[projectId];
             if (project) {
-                csvContent += `--- ${project.project_name || projectId} ---\n`;
-                csvContent += `Project ID,${project.project_id || projectId}\n`;
-                csvContent += `Date,${project.date || date}\n`;
-                csvContent += `Average Work Hours,${project.average_work_hours || 'N/A'}\n`;
-                csvContent += `Total Employees,${project.total_employees || 0}\n`;
-                csvContent += `Late Night Frequency,${project.late_night_frequency || 'N/A'}\n`;
-                csvContent += `Late Night Count,${project.late_night_count || 0}\n`;
-                csvContent += `Requires Night Shift,${project.requires_night_shift ? 'Yes' : 'No'}\n`;
-                csvContent += `Late Stay Count,${project.late_stay_count || 0}\n`;
-                
-                // Count women in late stay
                 const womenLateStay = project.late_stay_employees 
                     ? project.late_stay_employees.filter(e => e.gender === 'Female').length 
                     : 0;
-                csvContent += `Women Late Stay,${womenLateStay}\n`;
-                csvContent += `Recommendation,"${project.recommendation || 'N/A'}"\n\n`;
                 
-                // Late stay employees details
-                if (project.late_stay_employees && project.late_stay_employees.length > 0) {
-                    csvContent += `Late Stay Employees Details\n`;
-                    csvContent += `Employee ID,Name,Gender,Checkout Time,Project,Office\n`;
-                    project.late_stay_employees.forEach(emp => {
-                        csvContent += `${emp.employee_id || ''},${emp.name || ''},${emp.gender || ''},${emp.checkout_time || ''},${emp.project_id || ''},${emp.office || ''}\n`;
-                    });
-                    csvContent += `\n`;
-                }
+                csvContent += `${escapeCSV(project.project_id || projectId)},${escapeCSV(project.project_name || projectId)},${project.total_employees || 0},${escapeCSV(project.average_work_hours || 'N/A')},${escapeCSV(project.late_night_frequency || 'N/A')},${project.late_stay_count || 0},${womenLateStay},${project.requires_night_shift ? 'Yes' : 'No'}\n`;
             }
         }
+        csvContent += `,,\n`;
+        csvContent += `,,\n`;
+        
+        // Detailed Project Information
+        for (const projectId in currentProjectData) {
+            const project = currentProjectData[projectId];
+            if (project) {
+                csvContent += `PROJECT: ${escapeCSV(project.project_name || projectId)} (${projectId}),,,\n`;
+                csvContent += `,,\n`;
+                
+                csvContent += `Project Details,,,\n`;
+                csvContent += `Field,Value,,\n`;
+                csvContent += `Project ID,${escapeCSV(project.project_id || projectId)},,\n`;
+                csvContent += `Project Name,${escapeCSV(project.project_name || projectId)},,\n`;
+                csvContent += `Date,${escapeCSV(project.date || date)},,\n`;
+                csvContent += `Total Employees,${project.total_employees || 0},,\n`;
+                csvContent += `Average Work Hours,${escapeCSV(project.average_work_hours || 'N/A')},,\n`;
+                csvContent += `Late Night Frequency,${escapeCSV(project.late_night_frequency || 'N/A')},,\n`;
+                csvContent += `Late Night Count,${project.late_night_count || 0},,\n`;
+                csvContent += `Requires Night Shift,${project.requires_night_shift ? 'Yes' : 'No'},,\n`;
+                csvContent += `Late Stay Count,${project.late_stay_count || 0},,\n`;
+                
+                const womenLateStay = project.late_stay_employees 
+                    ? project.late_stay_employees.filter(e => e.gender === 'Female').length 
+                    : 0;
+                csvContent += `Women Late Stay,${womenLateStay},,\n`;
+                csvContent += `Recommendation,${escapeCSV(project.recommendation || 'N/A')},,\n`;
+                csvContent += `,,\n`;
+                
+                // Late Stay Employees for this Project
+                if (project.late_stay_employees && project.late_stay_employees.length > 0) {
+                    csvContent += `Late Stay Employees - ${escapeCSV(project.project_name || projectId)},,,\n`;
+                    csvContent += `Employee ID,Employee Name,Gender,Checkout Time,Office Location,\n`;
+                    project.late_stay_employees.forEach(emp => {
+                        csvContent += `${escapeCSV(emp.employee_id)},${escapeCSV(emp.name)},${escapeCSV(emp.gender)},${escapeCSV(emp.checkout_time)},${escapeCSV(emp.office || '-')},\n`;
+                    });
+                } else {
+                    csvContent += `Late Stay Employees - ${escapeCSV(project.project_name || projectId)},,,\n`;
+                    csvContent += `No late stay employees for this project,,\n`;
+                }
+                csvContent += `,,\n`;
+                csvContent += `,,\n`;
+            }
+        }
+        
+        // SECTION 6: STATISTICAL SUMMARY
+        csvContent += `STATISTICAL SUMMARY,,,\n`;
+        csvContent += `,,\n`;
+        
+        csvContent += `Metric,Value,,\n`;
+        
+        if (currentComplianceData) {
+            csvContent += `Total Employees,${currentComplianceData.total_employees || 0},,\n`;
+            csvContent += `Present Employees,${currentComplianceData.present_employees || 0},,\n`;
+            csvContent += `Absent Employees,${currentComplianceData.absent_employees || 0},,\n`;
+            csvContent += `Overall Compliance %,${currentComplianceData.compliance_percentage || 0}%,,\n`;
+        }
+        
+        if (currentAttendanceData && currentAttendanceData.attendance_records) {
+            const records = currentAttendanceData.attendance_records;
+            const lateArrivals = records.filter(r => r.checkin_time > '09:00' && r.checkout_time < '20:00').length;
+            const lateStays = records.filter(r => r.checkout_time >= '20:00').length;
+            csvContent += `Total Attendance Records,${records.length},,\n`;
+            csvContent += `Late Arrivals,${lateArrivals},,\n`;
+            csvContent += `Late Stays,${lateStays},,\n`;
+        }
+        
+        if (currentLateStayData) {
+            csvContent += `Total Late Stay Employees,${currentLateStayData.total_count || 0},,\n`;
+            const femaleCount = currentLateStayData.late_stay_employees 
+                ? currentLateStayData.late_stay_employees.filter(e => e.gender === 'Female').length 
+                : 0;
+            csvContent += `Women Late Stay,${femaleCount},,\n`;
+        }
+        
+        if (currentProjectData && Object.keys(currentProjectData).length > 0) {
+            csvContent += `Total Projects,${Object.keys(currentProjectData).length},,\n`;
+        }
+        
+        csvContent += `,,\n`;
+        csvContent += `End of Report,,,\n`;
         
         // Create and download the file
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement('a');
         const url = URL.createObjectURL(blob);
         link.setAttribute('href', url);
-        link.setAttribute('download', `reports_${date || 'export'}.csv`);
+        link.setAttribute('download', `WinAttendance_Reports_${date || 'export'}.csv`);
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
         link.click();
@@ -711,10 +838,6 @@ function showSuccess(message) {
         successDiv.remove();
     }, 3000);
 }
-
-// Store original data for filtering
-let originalAttendanceData = null;
-let originalLateStayData = null;
 
 // Sort table function
 let sortDirection = {};
@@ -1275,7 +1398,4 @@ function handleSendMessage() {
         setTimeout(() => addMessage('bot', "I answer dashboard-specific questions. Try: 'How many employees?', 'Who stayed late?', or 'P101 average'"), 400);
     }
 }
-
-// Initialize chat when dashboard loads (will be called after main initialization)
-// Chat widget initialization is handled in the main DOMContentLoaded above
 

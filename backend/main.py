@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
-import os
+from pathlib import Path
 
 from backend.attendance_api.routes import router as attendance_router
 from backend.late_stay_api.routes import router as late_stay_router
@@ -17,22 +17,18 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# CORS middleware to allow frontend to access APIs
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, specify your frontend URL
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Include routers
 app.include_router(attendance_router, prefix="/api/attendance", tags=["Attendance"])
 app.include_router(late_stay_router, prefix="/api/late-stay", tags=["Late Stay"])
 app.include_router(reports_router, prefix="/api/reports", tags=["Reports"])
 
-# Serve static files (dashboard)
-from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 static_dir = BASE_DIR / "frontend" / "dashboard"
 
@@ -46,8 +42,6 @@ async def root():
     if dashboard_path.exists():
         return FileResponse(str(dashboard_path))
     return {"message": "Attendance & Late-Stay Copilot API", "status": "running", "dashboard": "Not found"}
-
-# Note: Static files are served via /static/ mount point
 
 @app.get("/health")
 async def health():

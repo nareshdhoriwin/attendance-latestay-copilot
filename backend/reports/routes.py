@@ -296,26 +296,50 @@ async def get_wfo_compliance(
 
 @router.get("/wellbeing-recommendations")
 async def get_wellbeing_recommendations(
-    employee_id: Optional[str] = Query(None, description="Employee ID (optional)")
+    employee_id: Optional[str] = Query(None, description="Employee ID (optional)"),
+    date: Optional[str] = Query(None, description="Date in YYYY-MM-DD format")
 ):
     """
     Get wellbeing recommendations based on work patterns
     """
-    attendance_data = load_json_file("attendance.json")
     employees_data = load_json_file("employees.json")
+    
+    attendance_records = []
+    try:
+        multi_day_data = load_json_file("attendance_multi_day.json")
+        if isinstance(multi_day_data, dict) and "days" in multi_day_data:
+            target_date = date or multi_day_data.get("latest_date")
+            if target_date:
+                day_data = next((d for d in multi_day_data["days"] if d.get("date") == target_date), None)
+                if day_data:
+                    attendance_records = day_data.get("attendance_records", [])
+        elif isinstance(multi_day_data, list):
+            target_date = date
+            if target_date:
+                day_data = next((d for d in multi_day_data if d.get("date") == target_date), None)
+                if day_data:
+                    attendance_records = day_data.get("attendance_records", [])
+    except:
+        try:
+            attendance_data = load_json_file("attendance.json")
+            if isinstance(attendance_data, dict) and "attendance_records" in attendance_data:
+                attendance_records = attendance_data["attendance_records"]
+            elif isinstance(attendance_data, list):
+                attendance_records = attendance_data
+        except:
+            attendance_records = []
     
     recommendations = []
     
     if employee_id:
-        # Get recommendations for specific employee
-        employee = next((e for e in employees_data["employees"] if e["employee_id"] == employee_id), None)
+        employee = next((e for e in employees_data.get("employees", []) if e.get("employee_id") == employee_id), None)
         if not employee:
             raise HTTPException(status_code=404, detail=f"Employee {employee_id} not found")
         
-        records = [r for r in attendance_data["attendance_records"] if r["employee_id"] == employee_id]
+        records = [r for r in attendance_records if r.get("employee_id") == employee_id]
         if records:
             record = records[0]
-            hours = calculate_hours(record["checkin_time"], record["checkout_time"])
+            hours = calculate_hours(record.get("checkin_time", "00:00"), record.get("checkout_time", "00:00"))
             
             if hours > 10:
                 recommendations.append({
@@ -324,14 +348,13 @@ async def get_wellbeing_recommendations(
                     "priority": "high"
                 })
             
-            if is_after_8pm(record["checkout_time"]):
+            if is_after_8pm(record.get("checkout_time", "")):
                 recommendations.append({
                     "type": "late_stay",
                     "message": "You stayed late today. Ensure you have safe transportation arranged.",
                     "priority": "medium"
                 })
     else:
-        # General recommendations
         recommendations.append({
             "type": "general",
             "message": "Maintain regular work hours and take adequate breaks for optimal productivity.",

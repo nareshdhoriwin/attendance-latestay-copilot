@@ -1,805 +1,904 @@
 {
   "employees": [
     {
-      "employee_id": "E1001",
-      "name": "Rahul Reddy",
-      "gender": "Male",
-      "date_of_joining": "2021-09-30",
-      "project_id": "P101",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1002",
-      "name": "Neeraj Mehta",
-      "gender": "Male",
-      "date_of_joining": "2019-05-11",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1003",
-      "name": "Vikram Kulkarni",
-      "gender": "Male",
-      "date_of_joining": "2025-02-10",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1004",
-      "name": "Ananya Gupta",
-      "gender": "Female",
-      "date_of_joining": "2023-09-28",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1005",
-      "name": "Sneha Nair",
-      "gender": "Female",
-      "date_of_joining": "2023-04-06",
-      "project_id": "P101",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1006",
-      "name": "Priya Bansal",
-      "gender": "Female",
-      "date_of_joining": "2025-01-05",
-      "project_id": "P101",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1007",
-      "name": "Vikram Yadav",
-      "gender": "Male",
-      "date_of_joining": "2023-01-21",
-      "project_id": "P101",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1008",
-      "name": "Vivek Yadav",
-      "gender": "Male",
-      "date_of_joining": "2019-11-23",
-      "project_id": "P102",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1009",
-      "name": "Kavya Bansal",
-      "gender": "Female",
-      "date_of_joining": "2023-02-03",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1010",
-      "name": "Aisha Tripathi",
-      "gender": "Female",
-      "date_of_joining": "2020-12-01",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1011",
-      "name": "Meera Reddy",
-      "gender": "Female",
-      "date_of_joining": "2025-03-31",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1012",
-      "name": "Vivek Verma",
-      "gender": "Male",
-      "date_of_joining": "2022-07-16",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1013",
-      "name": "Divya Khan",
-      "gender": "Female",
-      "date_of_joining": "2023-06-09",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1014",
-      "name": "Anil Iyer",
-      "gender": "Male",
-      "date_of_joining": "2021-10-07",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1015",
-      "name": "Tanvi Mukherjee",
-      "gender": "Female",
-      "date_of_joining": "2023-01-22",
-      "project_id": "P101",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1016",
-      "name": "Aisha Verma",
-      "gender": "Female",
-      "date_of_joining": "2020-03-25",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1017",
-      "name": "Sakshi Nair",
-      "gender": "Female",
-      "date_of_joining": "2023-04-26",
-      "project_id": "P101",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1018",
-      "name": "Bhavana Sharma",
-      "gender": "Female",
-      "date_of_joining": "2020-04-14",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1019",
-      "name": "Shreya Rao",
-      "gender": "Female",
-      "date_of_joining": "2022-04-17",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1020",
-      "name": "Harini Gupta",
-      "gender": "Female",
-      "date_of_joining": "2024-09-10",
-      "project_id": "P102",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1021",
-      "name": "Harini Tripathi",
-      "gender": "Female",
-      "date_of_joining": "2021-03-25",
-      "project_id": "P101",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1022",
-      "name": "Rohit Das",
-      "gender": "Male",
-      "date_of_joining": "2024-06-24",
-      "project_id": "P101",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1023",
-      "name": "Ishita Verma",
-      "gender": "Female",
-      "date_of_joining": "2021-09-13",
-      "project_id": "P102",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1024",
-      "name": "Manish Nair",
-      "gender": "Male",
-      "date_of_joining": "2024-12-21",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1025",
-      "name": "Bhavana Gupta",
-      "gender": "Female",
-      "date_of_joining": "2021-12-21",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1026",
-      "name": "Vikram Kulkarni",
-      "gender": "Male",
-      "date_of_joining": "2022-06-30",
-      "project_id": "P101",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1027",
-      "name": "Vaishnavi Singh",
-      "gender": "Female",
-      "date_of_joining": "2024-01-24",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1028",
-      "name": "Ananya Joshi",
-      "gender": "Female",
-      "date_of_joining": "2025-03-18",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1029",
-      "name": "Amit Patel",
-      "gender": "Male",
-      "date_of_joining": "2019-10-04",
-      "project_id": "P102",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1030",
-      "name": "Gaurav Patel",
-      "gender": "Male",
-      "date_of_joining": "2022-02-14",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1031",
-      "name": "Neeraj Joshi",
-      "gender": "Male",
-      "date_of_joining": "2024-04-20",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1032",
-      "name": "Divya Rao",
-      "gender": "Female",
-      "date_of_joining": "2020-02-02",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1033",
-      "name": "Vaishnavi Verma",
-      "gender": "Female",
-      "date_of_joining": "2020-02-08",
-      "project_id": "P101",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1034",
-      "name": "Vivek Kulkarni",
-      "gender": "Male",
-      "date_of_joining": "2021-02-18",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1035",
-      "name": "Anil Bansal",
-      "gender": "Male",
-      "date_of_joining": "2021-10-20",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1036",
-      "name": "Amit Pillai",
-      "gender": "Male",
-      "date_of_joining": "2019-03-02",
-      "project_id": "P102",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1037",
-      "name": "Karthik Mehta",
-      "gender": "Male",
-      "date_of_joining": "2024-06-12",
-      "project_id": "P101",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1038",
-      "name": "Karthik Mukherjee",
-      "gender": "Male",
-      "date_of_joining": "2019-01-09",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1039",
-      "name": "Nikita Mehta",
-      "gender": "Female",
-      "date_of_joining": "2025-03-26",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1040",
-      "name": "Deepak Kulkarni",
-      "gender": "Male",
-      "date_of_joining": "2019-08-28",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1041",
-      "name": "Priya Verma",
-      "gender": "Female",
-      "date_of_joining": "2025-07-20",
-      "project_id": "P101",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1042",
-      "name": "Amit Singh",
-      "gender": "Male",
-      "date_of_joining": "2019-11-25",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1043",
-      "name": "Vivek Mukherjee",
-      "gender": "Male",
-      "date_of_joining": "2020-05-06",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1044",
-      "name": "Rohit Nair",
-      "gender": "Male",
-      "date_of_joining": "2023-09-14",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1045",
-      "name": "Kavya Kulkarni",
-      "gender": "Female",
-      "date_of_joining": "2022-07-10",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1046",
-      "name": "Vaishnavi Das",
-      "gender": "Female",
-      "date_of_joining": "2019-10-25",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1047",
-      "name": "Rohan Pillai",
-      "gender": "Male",
-      "date_of_joining": "2021-05-23",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1048",
-      "name": "Aisha Patel",
-      "gender": "Female",
-      "date_of_joining": "2023-02-22",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1049",
-      "name": "Sakshi Singh",
-      "gender": "Female",
-      "date_of_joining": "2019-02-02",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1050",
-      "name": "Siddharth Reddy",
-      "gender": "Male",
-      "date_of_joining": "2020-04-17",
-      "project_id": "P102",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1051",
-      "name": "Anil Yadav",
-      "gender": "Male",
-      "date_of_joining": "2025-10-13",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1052",
-      "name": "Harini Khan",
-      "gender": "Female",
-      "date_of_joining": "2021-10-25",
-      "project_id": "P102",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1053",
-      "name": "Santosh Reddy",
-      "gender": "Male",
-      "date_of_joining": "2019-06-30",
-      "project_id": "P101",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1054",
-      "name": "Neha Bansal",
-      "gender": "Female",
-      "date_of_joining": "2025-03-09",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1055",
-      "name": "Rohan Iyer",
-      "gender": "Male",
-      "date_of_joining": "2025-02-12",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1056",
-      "name": "Santosh Iyer",
-      "gender": "Male",
-      "date_of_joining": "2019-06-21",
-      "project_id": "P101",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1057",
-      "name": "Suresh Kulkarni",
-      "gender": "Male",
-      "date_of_joining": "2021-10-19",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1058",
-      "name": "Sakshi Iyer",
-      "gender": "Female",
-      "date_of_joining": "2021-08-27",
-      "project_id": "P102",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1059",
-      "name": "Santosh Sharma",
-      "gender": "Male",
-      "date_of_joining": "2021-01-04",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1060",
-      "name": "Ishita Reddy",
-      "gender": "Female",
-      "date_of_joining": "2020-10-14",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1061",
-      "name": "Manish Patel",
-      "gender": "Male",
-      "date_of_joining": "2021-03-28",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1062",
-      "name": "Ishita Patel",
-      "gender": "Female",
-      "date_of_joining": "2019-04-07",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1063",
-      "name": "Aisha Reddy",
-      "gender": "Female",
-      "date_of_joining": "2022-12-09",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1064",
-      "name": "Ananya Rao",
-      "gender": "Female",
-      "date_of_joining": "2021-12-05",
-      "project_id": "P101",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1065",
-      "name": "Priya Rao",
-      "gender": "Female",
-      "date_of_joining": "2025-09-09",
-      "project_id": "P101",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1066",
-      "name": "Aparna Tripathi",
-      "gender": "Female",
-      "date_of_joining": "2024-09-25",
-      "project_id": "P101",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1067",
-      "name": "Anil Verma",
-      "gender": "Male",
-      "date_of_joining": "2023-11-22",
-      "project_id": "P101",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1068",
-      "name": "Suresh Mehta",
-      "gender": "Male",
-      "date_of_joining": "2019-10-14",
-      "project_id": "P102",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1069",
-      "name": "Sneha Yadav",
-      "gender": "Female",
-      "date_of_joining": "2024-09-08",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1070",
-      "name": "Nikita Pillai",
-      "gender": "Female",
-      "date_of_joining": "2020-06-05",
-      "project_id": "P101",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1071",
-      "name": "Neha Tripathi",
-      "gender": "Female",
-      "date_of_joining": "2025-05-20",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1072",
-      "name": "Deepak Yadav",
-      "gender": "Male",
-      "date_of_joining": "2021-05-10",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1073",
-      "name": "Vaishnavi Bansal",
-      "gender": "Female",
-      "date_of_joining": "2023-12-17",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1074",
-      "name": "Rohan Yadav",
-      "gender": "Male",
-      "date_of_joining": "2024-10-12",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1075",
-      "name": "Vivek Yadav",
-      "gender": "Male",
-      "date_of_joining": "2021-07-09",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1076",
-      "name": "Vivek Khan",
-      "gender": "Male",
-      "date_of_joining": "2025-11-08",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1077",
-      "name": "Tanvi Kulkarni",
-      "gender": "Female",
-      "date_of_joining": "2023-04-22",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1078",
-      "name": "Aryan Mehta",
-      "gender": "Male",
-      "date_of_joining": "2021-06-15",
-      "project_id": "P101",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1079",
-      "name": "Priya Pillai",
-      "gender": "Female",
-      "date_of_joining": "2021-10-17",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1080",
-      "name": "Akash Singh",
-      "gender": "Male",
-      "date_of_joining": "2025-04-08",
-      "project_id": "P101",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1081",
-      "name": "Sakshi Singh",
-      "gender": "Female",
-      "date_of_joining": "2023-10-14",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1082",
-      "name": "Manish Bansal",
-      "gender": "Male",
-      "date_of_joining": "2021-11-27",
-      "project_id": "P102",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1083",
-      "name": "Harini Khan",
-      "gender": "Female",
-      "date_of_joining": "2021-09-06",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1084",
-      "name": "Ishita Reddy",
-      "gender": "Female",
-      "date_of_joining": "2022-10-07",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1085",
-      "name": "Siddharth Patel",
-      "gender": "Male",
-      "date_of_joining": "2023-04-18",
-      "project_id": "P102",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1086",
-      "name": "Santosh Mehta",
-      "gender": "Male",
-      "date_of_joining": "2022-09-17",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1087",
-      "name": "Santosh Mukherjee",
-      "gender": "Male",
-      "date_of_joining": "2025-07-20",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1088",
-      "name": "Sushmita Sharma",
-      "gender": "Female",
-      "date_of_joining": "2022-12-11",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1089",
-      "name": "Bhavana Pillai",
-      "gender": "Female",
-      "date_of_joining": "2025-10-06",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1090",
-      "name": "Aparna Khan",
-      "gender": "Female",
-      "date_of_joining": "2019-04-29",
-      "project_id": "P101",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1091",
-      "name": "Neha Bansal",
-      "gender": "Female",
-      "date_of_joining": "2020-06-06",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1092",
-      "name": "Tanvi Joshi",
-      "gender": "Female",
-      "date_of_joining": "2019-04-22",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1093",
-      "name": "Neha Verma",
-      "gender": "Female",
-      "date_of_joining": "2021-12-01",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1094",
-      "name": "Shreya Mukherjee",
-      "gender": "Female",
-      "date_of_joining": "2022-02-13",
-      "project_id": "P102",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1095",
-      "name": "Aisha Khan",
-      "gender": "Female",
-      "date_of_joining": "2019-03-21",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1096",
-      "name": "Ishita Nair",
-      "gender": "Female",
-      "date_of_joining": "2019-06-14",
-      "project_id": "P102",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1097",
-      "name": "Rahul Tripathi",
-      "gender": "Male",
-      "date_of_joining": "2020-09-16",
-      "project_id": "P101",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1098",
-      "name": "Neeraj Kulkarni",
-      "gender": "Male",
-      "date_of_joining": "2024-03-19",
-      "project_id": "P102",
-      "office_location": "Hyderabad"
-    },
-    {
-      "employee_id": "E1099",
-      "name": "Rohit Tripathi",
-      "gender": "Male",
-      "date_of_joining": "2020-04-14",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
-    },
-    {
-      "employee_id": "E1100",
-      "name": "Sneha Joshi",
-      "gender": "Female",
-      "date_of_joining": "2019-04-16",
-      "project_id": "P102",
-      "office_location": "Bengaluru"
+        "employee_id": "E1001",
+        "name": "Rahul Reddy",
+        "gender": "Male",
+        "date_of_joining": "2021-09-30",
+        "project_id": "P101",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1002",
+        "name": "Neeraj Mehta",
+        "gender": "Male",
+        "date_of_joining": "2019-05-11",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1003",
+        "name": "Vikram Kulkarni",
+        "gender": "Male",
+        "date_of_joining": "2025-02-10",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1004",
+        "name": "Ananya Gupta",
+        "gender": "Female",
+        "date_of_joining": "2023-09-28",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1005",
+        "name": "Sneha Nair",
+        "gender": "Female",
+        "date_of_joining": "2023-04-06",
+        "project_id": "P101",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1006",
+        "name": "Priya Bansal",
+        "gender": "Female",
+        "date_of_joining": "2025-01-05",
+        "project_id": "P101",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1007",
+        "name": "Vikram Yadav",
+        "gender": "Male",
+        "date_of_joining": "2023-01-21",
+        "project_id": "P101",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1008",
+        "name": "Vivek Yadav",
+        "gender": "Male",
+        "date_of_joining": "2019-11-23",
+        "project_id": "P102",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1009",
+        "name": "Kavya Bansal",
+        "gender": "Female",
+        "date_of_joining": "2023-02-03",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1010",
+        "name": "Aisha Tripathi",
+        "gender": "Female",
+        "date_of_joining": "2020-12-01",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1011",
+        "name": "Meera Reddy",
+        "gender": "Female",
+        "date_of_joining": "2025-03-31",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1012",
+        "name": "Vivek Verma",
+        "gender": "Male",
+        "date_of_joining": "2022-07-16",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1013",
+        "name": "Divya Khan",
+        "gender": "Female",
+        "date_of_joining": "2023-06-09",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1014",
+        "name": "Anil Iyer",
+        "gender": "Male",
+        "date_of_joining": "2021-10-07",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1015",
+        "name": "Tanvi Mukherjee",
+        "gender": "Female",
+        "date_of_joining": "2023-01-22",
+        "project_id": "P101",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1016",
+        "name": "Aisha Verma",
+        "gender": "Female",
+        "date_of_joining": "2020-03-25",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1017",
+        "name": "Sakshi Nair",
+        "gender": "Female",
+        "date_of_joining": "2023-04-26",
+        "project_id": "P101",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1018",
+        "name": "Bhavana Sharma",
+        "gender": "Female",
+        "date_of_joining": "2020-04-14",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1019",
+        "name": "Shreya Rao",
+        "gender": "Female",
+        "date_of_joining": "2022-04-17",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1020",
+        "name": "Harini Gupta",
+        "gender": "Female",
+        "date_of_joining": "2024-09-10",
+        "project_id": "P102",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1021",
+        "name": "Harini Tripathi",
+        "gender": "Female",
+        "date_of_joining": "2021-03-25",
+        "project_id": "P101",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1022",
+        "name": "Rohit Das",
+        "gender": "Male",
+        "date_of_joining": "2024-06-24",
+        "project_id": "P101",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1023",
+        "name": "Ishita Verma",
+        "gender": "Female",
+        "date_of_joining": "2021-09-13",
+        "project_id": "P102",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1024",
+        "name": "Manish Nair",
+        "gender": "Male",
+        "date_of_joining": "2024-12-21",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1025",
+        "name": "Bhavana Gupta",
+        "gender": "Female",
+        "date_of_joining": "2021-12-21",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1026",
+        "name": "Vikram Kulkarni",
+        "gender": "Male",
+        "date_of_joining": "2022-06-30",
+        "project_id": "P101",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1027",
+        "name": "Vaishnavi Singh",
+        "gender": "Female",
+        "date_of_joining": "2024-01-24",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1028",
+        "name": "Ananya Joshi",
+        "gender": "Female",
+        "date_of_joining": "2025-03-18",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1029",
+        "name": "Amit Patel",
+        "gender": "Male",
+        "date_of_joining": "2019-10-04",
+        "project_id": "P102",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1030",
+        "name": "Gaurav Patel",
+        "gender": "Male",
+        "date_of_joining": "2022-02-14",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1031",
+        "name": "Neeraj Joshi",
+        "gender": "Male",
+        "date_of_joining": "2024-04-20",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1032",
+        "name": "Divya Rao",
+        "gender": "Female",
+        "date_of_joining": "2020-02-02",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1033",
+        "name": "Vaishnavi Verma",
+        "gender": "Female",
+        "date_of_joining": "2020-02-08",
+        "project_id": "P101",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1034",
+        "name": "Vivek Kulkarni",
+        "gender": "Male",
+        "date_of_joining": "2021-02-18",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1035",
+        "name": "Anil Bansal",
+        "gender": "Male",
+        "date_of_joining": "2021-10-20",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1036",
+        "name": "Amit Pillai",
+        "gender": "Male",
+        "date_of_joining": "2019-03-02",
+        "project_id": "P102",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1037",
+        "name": "Karthik Mehta",
+        "gender": "Male",
+        "date_of_joining": "2024-06-12",
+        "project_id": "P101",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1038",
+        "name": "Karthik Mukherjee",
+        "gender": "Male",
+        "date_of_joining": "2019-01-09",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1039",
+        "name": "Nikita Mehta",
+        "gender": "Female",
+        "date_of_joining": "2025-03-26",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1040",
+        "name": "Deepak Kulkarni",
+        "gender": "Male",
+        "date_of_joining": "2019-08-28",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1041",
+        "name": "Priya Verma",
+        "gender": "Female",
+        "date_of_joining": "2025-07-20",
+        "project_id": "P101",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1042",
+        "name": "Amit Singh",
+        "gender": "Male",
+        "date_of_joining": "2019-11-25",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1043",
+        "name": "Vivek Mukherjee",
+        "gender": "Male",
+        "date_of_joining": "2020-05-06",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1044",
+        "name": "Rohit Nair",
+        "gender": "Male",
+        "date_of_joining": "2023-09-14",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1045",
+        "name": "Kavya Kulkarni",
+        "gender": "Female",
+        "date_of_joining": "2022-07-10",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1046",
+        "name": "Vaishnavi Das",
+        "gender": "Female",
+        "date_of_joining": "2019-10-25",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1047",
+        "name": "Rohan Pillai",
+        "gender": "Male",
+        "date_of_joining": "2021-05-23",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1048",
+        "name": "Aisha Patel",
+        "gender": "Female",
+        "date_of_joining": "2023-02-22",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1049",
+        "name": "Sakshi Singh",
+        "gender": "Female",
+        "date_of_joining": "2019-02-02",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1050",
+        "name": "Siddharth Reddy",
+        "gender": "Male",
+        "date_of_joining": "2020-04-17",
+        "project_id": "P102",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1051",
+        "name": "Anil Yadav",
+        "gender": "Male",
+        "date_of_joining": "2025-10-13",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1052",
+        "name": "Harini Khan",
+        "gender": "Female",
+        "date_of_joining": "2021-10-25",
+        "project_id": "P102",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1053",
+        "name": "Santosh Reddy",
+        "gender": "Male",
+        "date_of_joining": "2019-06-30",
+        "project_id": "P101",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1054",
+        "name": "Neha Bansal",
+        "gender": "Female",
+        "date_of_joining": "2025-03-09",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1055",
+        "name": "Rohan Iyer",
+        "gender": "Male",
+        "date_of_joining": "2025-02-12",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1056",
+        "name": "Santosh Iyer",
+        "gender": "Male",
+        "date_of_joining": "2019-06-21",
+        "project_id": "P101",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1057",
+        "name": "Suresh Kulkarni",
+        "gender": "Male",
+        "date_of_joining": "2021-10-19",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1058",
+        "name": "Sakshi Iyer",
+        "gender": "Female",
+        "date_of_joining": "2021-08-27",
+        "project_id": "P102",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1059",
+        "name": "Santosh Sharma",
+        "gender": "Male",
+        "date_of_joining": "2021-01-04",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1060",
+        "name": "Ishita Reddy",
+        "gender": "Female",
+        "date_of_joining": "2020-10-14",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1061",
+        "name": "Manish Patel",
+        "gender": "Male",
+        "date_of_joining": "2021-03-28",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1062",
+        "name": "Ishita Patel",
+        "gender": "Female",
+        "date_of_joining": "2019-04-07",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1063",
+        "name": "Aisha Reddy",
+        "gender": "Female",
+        "date_of_joining": "2022-12-09",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1064",
+        "name": "Ananya Rao",
+        "gender": "Female",
+        "date_of_joining": "2021-12-05",
+        "project_id": "P101",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1065",
+        "name": "Priya Rao",
+        "gender": "Female",
+        "date_of_joining": "2025-09-09",
+        "project_id": "P101",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1066",
+        "name": "Aparna Tripathi",
+        "gender": "Female",
+        "date_of_joining": "2024-09-25",
+        "project_id": "P101",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1067",
+        "name": "Anil Verma",
+        "gender": "Male",
+        "date_of_joining": "2023-11-22",
+        "project_id": "P101",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1068",
+        "name": "Suresh Mehta",
+        "gender": "Male",
+        "date_of_joining": "2019-10-14",
+        "project_id": "P102",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1069",
+        "name": "Sneha Yadav",
+        "gender": "Female",
+        "date_of_joining": "2024-09-08",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1070",
+        "name": "Nikita Pillai",
+        "gender": "Female",
+        "date_of_joining": "2020-06-05",
+        "project_id": "P101",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1071",
+        "name": "Neha Tripathi",
+        "gender": "Female",
+        "date_of_joining": "2025-05-20",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1072",
+        "name": "Deepak Yadav",
+        "gender": "Male",
+        "date_of_joining": "2021-05-10",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1073",
+        "name": "Vaishnavi Bansal",
+        "gender": "Female",
+        "date_of_joining": "2023-12-17",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1074",
+        "name": "Rohan Yadav",
+        "gender": "Male",
+        "date_of_joining": "2024-10-12",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1075",
+        "name": "Vivek Yadav",
+        "gender": "Male",
+        "date_of_joining": "2021-07-09",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1076",
+        "name": "Vivek Khan",
+        "gender": "Male",
+        "date_of_joining": "2025-11-08",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1077",
+        "name": "Tanvi Kulkarni",
+        "gender": "Female",
+        "date_of_joining": "2023-04-22",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1078",
+        "name": "Aryan Mehta",
+        "gender": "Male",
+        "date_of_joining": "2021-06-15",
+        "project_id": "P101",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1079",
+        "name": "Priya Pillai",
+        "gender": "Female",
+        "date_of_joining": "2021-10-17",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1080",
+        "name": "Akash Singh",
+        "gender": "Male",
+        "date_of_joining": "2025-04-08",
+        "project_id": "P101",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1081",
+        "name": "Sakshi Singh",
+        "gender": "Female",
+        "date_of_joining": "2023-10-14",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1082",
+        "name": "Manish Bansal",
+        "gender": "Male",
+        "date_of_joining": "2021-11-27",
+        "project_id": "P102",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1083",
+        "name": "Harini Khan",
+        "gender": "Female",
+        "date_of_joining": "2021-09-06",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1084",
+        "name": "Ishita Reddy",
+        "gender": "Female",
+        "date_of_joining": "2022-10-07",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1085",
+        "name": "Siddharth Patel",
+        "gender": "Male",
+        "date_of_joining": "2023-04-18",
+        "project_id": "P102",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1086",
+        "name": "Santosh Mehta",
+        "gender": "Male",
+        "date_of_joining": "2022-09-17",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1087",
+        "name": "Santosh Mukherjee",
+        "gender": "Male",
+        "date_of_joining": "2025-07-20",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1088",
+        "name": "Sushmita Sharma",
+        "gender": "Female",
+        "date_of_joining": "2022-12-11",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1089",
+        "name": "Bhavana Pillai",
+        "gender": "Female",
+        "date_of_joining": "2025-10-06",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1090",
+        "name": "Aparna Khan",
+        "gender": "Female",
+        "date_of_joining": "2019-04-29",
+        "project_id": "P101",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1091",
+        "name": "Neha Bansal",
+        "gender": "Female",
+        "date_of_joining": "2020-06-06",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1092",
+        "name": "Tanvi Joshi",
+        "gender": "Female",
+        "date_of_joining": "2019-04-22",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1093",
+        "name": "Neha Verma",
+        "gender": "Female",
+        "date_of_joining": "2021-12-01",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1094",
+        "name": "Shreya Mukherjee",
+        "gender": "Female",
+        "date_of_joining": "2022-02-13",
+        "project_id": "P102",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1095",
+        "name": "Aisha Khan",
+        "gender": "Female",
+        "date_of_joining": "2019-03-21",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1096",
+        "name": "Ishita Nair",
+        "gender": "Female",
+        "date_of_joining": "2019-06-14",
+        "project_id": "P102",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1097",
+        "name": "Rahul Tripathi",
+        "gender": "Male",
+        "date_of_joining": "2020-09-16",
+        "project_id": "P101",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1098",
+        "name": "Neeraj Kulkarni",
+        "gender": "Male",
+        "date_of_joining": "2024-03-19",
+        "project_id": "P102",
+        "office_location": "Hyderabad",
+        "Mode_of_work": "WFH"
+    },
+    {
+        "employee_id": "E1099",
+        "name": "Rohit Tripathi",
+        "gender": "Male",
+        "date_of_joining": "2020-04-14",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFO"
+    },
+    {
+        "employee_id": "E1100",
+        "name": "Sneha Joshi",
+        "gender": "Female",
+        "date_of_joining": "2019-04-16",
+        "project_id": "P102",
+        "office_location": "Bengaluru",
+        "Mode_of_work": "WFH"
     }
   ]
 }
-

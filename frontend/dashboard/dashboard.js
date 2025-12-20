@@ -78,6 +78,8 @@ function showPage(pageId) {
         }
     }
     
+    // No need to update questions - all questions are shown on all tabs
+    
     // Update content when switching pages
     if (pageId === 'attendance' && currentAttendanceData) {
         updateAttendanceTable(currentAttendanceData);
@@ -905,22 +907,79 @@ function showError(message) {
     }, 5000);
 }
 
-// ------------------ Chat widget (dashboard-specific quick questions) ------------------
-const CHAT_QUICK_QS = [
-    { id: 'total-employees', label: 'How many total employees are in the system?' },
-    { id: 'present-today', label: 'How many employees are present today?' },
-    { id: 'total-late-stay', label: 'How many total late-stay employees today?' },
-    { id: 'women-late-stay', label: 'How many women were in late stay today?' },
-    { id: 'list-late-stay', label: 'Who are the late-stay employees today?' },
-    { id: 'wfo-compliance-percentage', label: 'What is WFO compliance percentage today?' },
-    { id: 'wfh-compliance-percentage', label: 'What is WFH compliance percentage today?' },
-    { id: 'project-P101-average', label: 'What is average work hours for project P101?' },
-    { id: 'project-P102-average', label: 'What is average work hours for project P102?' },
-    { id: 'projects-high-late-night', label: 'Which projects have high late-night frequency?' },
-    { id: 'projects-night-shift', label: 'Which projects require night shift?' },
-    { id: 'project-P101-recommendation', label: 'Recommendation for project P101' },
-    { id: 'project-P102-recommendation', label: 'Recommendation for project P102' }
+// ------------------ Chat widget (all questions available on all tabs) ------------------
+const ALL_CHAT_QUESTIONS = [
+    // Dashboard & General Questions
+    { id: 'total-employees', label: 'How many total employees are in the system?', category: '📊 General' },
+    { id: 'present-today', label: 'How many employees are present today?', category: '📊 General' },
+    
+    // Attendance Questions
+    { id: 'late-arrivals', label: 'Who arrived late today?', category: '📋 Attendance' },
+    { id: 'early-leavers', label: 'Who left early today?', category: '📋 Attendance' },
+    { id: 'highest-hours', label: 'Who worked the most hours today?', category: '📋 Attendance' },
+    { id: 'average-work-hours', label: 'What is the average work hours today?', category: '📋 Attendance' },
+    
+    // Late Stay Questions
+    { id: 'total-late-stay', label: 'How many total late-stay employees today?', category: '🌙 Late Stay' },
+    { id: 'women-late-stay', label: 'How many women were in late stay today?', category: '🌙 Late Stay' },
+    { id: 'list-late-stay', label: 'Who are the late-stay employees today?', category: '🌙 Late Stay' },
+    { id: 'late-stay-by-project', label: 'Which project has most late stays?', category: '🌙 Late Stay' },
+    { id: 'late-stay-by-office', label: 'Which office has most late stays?', category: '🌙 Late Stay' },
+    { id: 'latest-checkout', label: 'Who checked out the latest?', category: '🌙 Late Stay' },
+    
+    // Reports & Compliance Questions
+    { id: 'wfo-compliance-percentage', label: 'What is WFO compliance percentage today?', category: '📈 Reports' },
+    { id: 'wfh-compliance-percentage', label: 'What is WFH compliance percentage today?', category: '📈 Reports' },
+    { id: 'project-P101-average', label: 'What is average work hours for project P101?', category: '📈 Reports' },
+    { id: 'project-P102-average', label: 'What is average work hours for project P102?', category: '📈 Reports' },
+    { id: 'projects-high-late-night', label: 'Which projects have high late-night frequency?', category: '📈 Reports' },
+    { id: 'projects-night-shift', label: 'Which projects require night shift?', category: '📈 Reports' },
+    { id: 'project-P101-recommendation', label: 'Recommendation for project P101', category: '📈 Reports' },
+    { id: 'project-P102-recommendation', label: 'Recommendation for project P102', category: '📈 Reports' }
 ];
+
+// Get current active tab
+function getCurrentActiveTab() {
+    const activeTab = document.querySelector('.nav-tab.active');
+    if (!activeTab) return 'dashboard';
+    const dataPage = activeTab.getAttribute('data-page');
+    return dataPage || 'dashboard';
+}
+
+// Update quick questions - now shows all questions grouped by category
+function updateQuickQuestions() {
+    const quickContainer = document.getElementById('chatQuickQuestions');
+    if (!quickContainer) return;
+    
+    // Clear existing questions
+    quickContainer.innerHTML = '';
+    
+    // Group questions by category
+    const categories = {};
+    ALL_CHAT_QUESTIONS.forEach(q => {
+        if (!categories[q.category]) {
+            categories[q.category] = [];
+        }
+        categories[q.category].push(q);
+    });
+    
+    // Render questions grouped by category
+    Object.keys(categories).forEach(category => {
+        // Add category header
+        const categoryHeader = document.createElement('div');
+        categoryHeader.className = 'chat-category-header';
+        categoryHeader.textContent = category;
+        quickContainer.appendChild(categoryHeader);
+        
+        // Add questions in this category
+        categories[category].forEach(q => {
+            const btn = document.createElement('button');
+            btn.textContent = q.label;
+            btn.onclick = () => handleQuickQuestionClick(q.id);
+            quickContainer.appendChild(btn);
+        });
+    });
+}
 
 function initChatWidget() {
     const toggle = document.getElementById('chatToggle');
@@ -937,13 +996,8 @@ function initChatWidget() {
         return;
     }
 
-    // Render quick questions
-    CHAT_QUICK_QS.forEach(q => {
-        const btn = document.createElement('button');
-        btn.textContent = q.label;
-        btn.onclick = () => handleQuickQuestionClick(q.id);
-        quickContainer.appendChild(btn);
-    });
+    // Render quick questions for the current tab
+    updateQuickQuestions();
 
     toggle.addEventListener('click', () => toggleChatPanel(true));
     closeBtn.addEventListener('click', () => toggleChatPanel(false));
@@ -1012,12 +1066,12 @@ function sendBotAnswer(text, forceScroll = false) {
 }
 
 function handleQuickQuestionClick(id) {
-    const question = CHAT_QUICK_QS.find(q => q.id === id);
+    const question = ALL_CHAT_QUESTIONS.find(q => q.id === id);
     if (!question) return;
     try { toggleChatPanel(true); } catch (e) { /* ignore if not available */ }
     addMessage('user', question.label, true);
 
-    // handle dashboard-specific questions using cached data
+    // handle questions using cached data
     switch (id) {
         case 'total-employees': {
             if (currentWfoCompliance && typeof currentWfoCompliance.total_employees === 'number') {
@@ -1052,6 +1106,88 @@ function handleQuickQuestionClick(id) {
                 const names = currentLateStayData.late_stay_employees.map(e => `${e.name || e.employee_id} (${e.checkout_time || '-'})`);
                 const text = names.length ? names.join(', ') : 'No late-stay employees today.';
                 return setTimeout(() => sendBotAnswer(`Late-stay employees: ${text}`, true), 300);
+            }
+            return setTimeout(() => sendBotAnswer('Late-stay data not available — refresh dashboard.', true), 300);
+        }
+        case 'late-arrivals': {
+            if (currentAttendanceData && Array.isArray(currentAttendanceData.attendance_records)) {
+                const lateArrivals = currentAttendanceData.attendance_records.filter(e => 
+                    e.status === 'Late Arrival' || (e.checkin_time && e.checkin_time > '09:30:00')
+                );
+                const names = lateArrivals.map(e => `${e.name || e.employee_id} (${e.checkin_time || '-'})`);
+                const text = names.length ? names.join(', ') : 'No late arrivals today.';
+                return setTimeout(() => sendBotAnswer(`Late arrivals: ${text}`, true), 300);
+            }
+            return setTimeout(() => sendBotAnswer('Attendance data not available — refresh dashboard.', true), 300);
+        }
+        case 'early-leavers': {
+            if (currentAttendanceData && Array.isArray(currentAttendanceData.attendance_records)) {
+                const earlyLeavers = currentAttendanceData.attendance_records.filter(e => 
+                    e.checkout_time && e.checkout_time < '17:00:00'
+                );
+                const names = earlyLeavers.map(e => `${e.name || e.employee_id} (${e.checkout_time || '-'})`);
+                const text = names.length ? names.join(', ') : 'No early leavers today.';
+                return setTimeout(() => sendBotAnswer(`Early leavers: ${text}`, true), 300);
+            }
+            return setTimeout(() => sendBotAnswer('Attendance data not available — refresh dashboard.', true), 300);
+        }
+        case 'highest-hours': {
+            if (currentAttendanceData && Array.isArray(currentAttendanceData.attendance_records)) {
+                const sorted = [...currentAttendanceData.attendance_records].sort((a, b) => 
+                    parseFloat(b.work_hours || 0) - parseFloat(a.work_hours || 0)
+                );
+                const top = sorted[0];
+                if (top) {
+                    return setTimeout(() => sendBotAnswer(`Highest hours: ${top.name || top.employee_id} worked ${top.work_hours || 0} hours`, true), 300);
+                }
+            }
+            return setTimeout(() => sendBotAnswer('Attendance data not available — refresh dashboard.', true), 300);
+        }
+        case 'average-work-hours': {
+            if (currentAttendanceData && Array.isArray(currentAttendanceData.attendance_records)) {
+                const total = currentAttendanceData.attendance_records.reduce((sum, e) => 
+                    sum + parseFloat(e.work_hours || 0), 0
+                );
+                const avg = (total / currentAttendanceData.attendance_records.length).toFixed(2);
+                return setTimeout(() => sendBotAnswer(`Average work hours today: ${avg} hours`, true), 300);
+            }
+            return setTimeout(() => sendBotAnswer('Attendance data not available — refresh dashboard.', true), 300);
+        }
+        case 'late-stay-by-project': {
+            if (currentLateStayData && Array.isArray(currentLateStayData.late_stay_employees)) {
+                const projectCounts = {};
+                currentLateStayData.late_stay_employees.forEach(e => {
+                    const proj = e.project || 'Unknown';
+                    projectCounts[proj] = (projectCounts[proj] || 0) + 1;
+                });
+                const sorted = Object.entries(projectCounts).sort((a, b) => b[1] - a[1]);
+                const text = sorted.length ? sorted.map(([proj, count]) => `${proj}: ${count}`).join(', ') : 'No late-stay data.';
+                return setTimeout(() => sendBotAnswer(`Late stay by project: ${text}`, true), 300);
+            }
+            return setTimeout(() => sendBotAnswer('Late-stay data not available — refresh dashboard.', true), 300);
+        }
+        case 'late-stay-by-office': {
+            if (currentLateStayData && Array.isArray(currentLateStayData.late_stay_employees)) {
+                const officeCounts = {};
+                currentLateStayData.late_stay_employees.forEach(e => {
+                    const office = e.office || 'Unknown';
+                    officeCounts[office] = (officeCounts[office] || 0) + 1;
+                });
+                const sorted = Object.entries(officeCounts).sort((a, b) => b[1] - a[1]);
+                const text = sorted.length ? sorted.map(([office, count]) => `${office}: ${count}`).join(', ') : 'No late-stay data.';
+                return setTimeout(() => sendBotAnswer(`Late stay by office: ${text}`, true), 300);
+            }
+            return setTimeout(() => sendBotAnswer('Late-stay data not available — refresh dashboard.', true), 300);
+        }
+        case 'latest-checkout': {
+            if (currentLateStayData && Array.isArray(currentLateStayData.late_stay_employees)) {
+                const sorted = [...currentLateStayData.late_stay_employees].sort((a, b) => 
+                    (b.checkout_time || '').localeCompare(a.checkout_time || '')
+                );
+                const latest = sorted[0];
+                if (latest) {
+                    return setTimeout(() => sendBotAnswer(`Latest checkout: ${latest.name || latest.employee_id} at ${latest.checkout_time || '-'}`, true), 300);
+                }
             }
             return setTimeout(() => sendBotAnswer('Late-stay data not available — refresh dashboard.', true), 300);
         }

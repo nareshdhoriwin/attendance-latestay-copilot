@@ -62,8 +62,19 @@ def calculate_hours(checkin: str, checkout: str) -> str:
         hours = diff.seconds // 3600
         minutes = (diff.seconds % 3600) // 60
         return f"{hours}h {minutes}m"
-    except:
+    except Exception as e:
+        _log_exception(e, "calculate_hours")
         return "0h 0m"
+
+def _log_exception(exc: Exception, name: str = "attendance"):
+    """Log exceptions to a file for debugging"""
+    try:
+        log_path = DATA_DIR / f"{name}_error.log"
+        with open(log_path, 'a', encoding='utf-8') as lf:
+            lf.write(f"\n--- {datetime.now().isoformat()} ---\n")
+            lf.write(''.join(traceback.format_exception(type(exc), exc, exc.__traceback__)))
+    except Exception:
+        pass
 
 def _log_exception(exc: Exception, name: str = "attendance"):
     try:

@@ -345,6 +345,10 @@ body {
     background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(52, 211, 153, 0.2) 100%);
 }
 
+.stat-info .stat-icon {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(96, 165, 250, 0.2) 100%);
+}
+
 .stat-content h3 {
     font-size: 0.95rem;
     color: #374151;
@@ -779,5 +783,187 @@ tbody tr:nth-child(even):hover {
 .table-card,
 .project-card {
     animation: fadeIn 0.5s ease-out;
+}
+
+/* Chat widget styles */
+.chat-widget {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 1200;
+    font-family: inherit;
+}
+
+.chat-button {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: none;
+    background: var(--primary-color);
+    color: white;
+    font-size: 1.25rem;
+    cursor: pointer;
+    box-shadow: var(--shadow-lg);
+    transition: all 0.3s ease;
+}
+
+.chat-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+}
+
+.chat-panel {
+    width: 340px;
+    max-height: 520px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    display: none;
+    flex-direction: column;
+}
+
+.chat-panel[aria-hidden="false"] {
+    display: flex;
+}
+
+.chat-header {
+    padding: 0.75rem 1rem;
+    background: linear-gradient(90deg, rgba(99,102,241,0.08), rgba(139,92,246,0.06));
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.chat-body {
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    overflow: auto;
+    max-height: 400px;
+}
+
+.chat-quick-questions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.chat-quick-questions button {
+    background: rgba(99, 102, 241, 0.05);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    text-align: left;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.chat-quick-questions button:hover {
+    background: rgba(99, 102, 241, 0.1);
+    border-color: var(--primary-color);
+}
+
+.chat-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    min-height: 100px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.chat-msg {
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    max-width: 85%;
+    word-wrap: break-word;
+}
+
+.chat-msg.user {
+    align-self: flex-end;
+    background: rgba(99, 102, 241, 0.85);
+    color: white;
+}
+
+.chat-msg.bot {
+    align-self: flex-start;
+    background: rgba(0, 0, 0, 0.04);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.chat-footer {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-top: 1px solid var(--border-color);
+    background: var(--bg-card);
+}
+
+.chat-footer input {
+    flex: 1;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.chat-footer input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.chat-footer button {
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    border: none;
+    background: var(--primary-color);
+    color: white;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.chat-footer button:hover {
+    background: var(--primary-dark);
+}
+
+.chat-close {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0.25rem;
+    transition: color 0.2s ease;
+}
+
+.chat-close:hover {
+    color: var(--text-primary);
+}
+
+.chat-clear {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 1.05rem;
+    padding: 0.25rem;
+    transition: color 0.2s ease;
+}
+
+.chat-clear:hover {
+    color: var(--text-primary);
 }
 

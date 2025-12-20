@@ -5,6 +5,10 @@ const API_BASE_URL = 'http://localhost:8000/api';
 let currentAttendanceData = null;
 // Cache for late-stay data for client-side filtering
 let currentLateStayData = null;
+// Cache for WFO compliance (contains total employees)
+let currentWfoCompliance = null;
+// Cache for project reports (P101, P102, etc.)
+let currentProjectData = {};
 
 // Initialize dashboard on load
 document.addEventListener('DOMContentLoaded', () => {
@@ -87,6 +91,9 @@ async function loadDashboard() {
         // Cache attendance and late-stay data for local filters, then update stats
         currentAttendanceData = attendanceData;
         currentLateStayData = lateStayData;
+        currentWfoCompliance = wfoCompliance;
+        // Cache project reports for quick dashboard questions
+        currentProjectData = { 'P101': projectP101, 'P102': projectP102 };
         originalAttendanceData = JSON.parse(JSON.stringify(attendanceData));
         originalLateStayData = JSON.parse(JSON.stringify(lateStayData));
         updateStats(attendanceData, lateStayData, womenLateStayData, wfoCompliance);
@@ -121,10 +128,32 @@ async function loadDashboard() {
 
 // Update statistics cards
 function updateStats(attendanceData, lateStayData, womenLateStayData, wfoCompliance) {
+    const formatPercent = (val) => {
+        const n = typeof val === 'number' ? val : parseFloat(val || '0');
+        return `${n.toFixed(2)}%`;
+    };
+
     document.getElementById('totalPresent').textContent = attendanceData.attendance_records?.length || 0;
     document.getElementById('lateStayCount').textContent = lateStayData.total_count || 0;
     document.getElementById('womenLateStay').textContent = womenLateStayData.count || 0;
-    document.getElementById('wfoCompliance').textContent = `${wfoCompliance.compliance_percentage || 0}%`;
+
+    // Prefer mode-specific WFO compliance if we have WFO employees, else fallback to overall compliance
+    const wfoTotal = wfoCompliance.wfo_total ?? 0;
+    const overallPct = wfoCompliance.compliance_percentage ?? 0;
+    const wfoPct = (wfoTotal > 0 && typeof wfoCompliance.wfo_compliance_percentage === 'number')
+        ? wfoCompliance.wfo_compliance_percentage
+        : overallPct;
+    document.getElementById('wfoCompliance').textContent = formatPercent(wfoPct);
+
+    // WFH compliance: show mode-specific percentage if there are WFH employees, else 0%
+    const wfhEl = document.getElementById('wfhCompliance');
+    if (wfhEl) {
+        const wfhTotal = wfoCompliance.wfh_total ?? 0;
+        const wfhPct = (wfhTotal > 0 && typeof wfoCompliance.wfh_compliance_percentage === 'number')
+            ? wfoCompliance.wfh_compliance_percentage
+            : 0;
+        wfhEl.textContent = formatPercent(wfhPct);
+    }
 }
 
 // Update attendance table
@@ -563,4 +592,233 @@ function showError(message) {
         errorDiv.remove();
     }, 5000);
 }
+
+// ------------------ Chat widget (dashboard-specific quick questions) ------------------
+const CHAT_QUICK_QS = [
+    { id: 'total-employees', label: 'How many total employees are in the system?' },
+    { id: 'present-today', label: 'How many employees are present today?' },
+    { id: 'total-late-stay', label: 'How many total late-stay employees today?' },
+    { id: 'women-late-stay', label: 'How many women were in late stay today?' },
+    { id: 'list-late-stay', label: 'Who are the late-stay employees today?' },
+    { id: 'wfo-compliance-percentage', label: 'What is WFO compliance percentage today?' },
+    { id: 'wfh-compliance-percentage', label: 'What is WFH compliance percentage today?' },
+    { id: 'project-P101-average', label: 'What is average work hours for project P101?' },
+    { id: 'project-P102-average', label: 'What is average work hours for project P102?' },
+    { id: 'projects-high-late-night', label: 'Which projects have high late-night frequency?' },
+    { id: 'projects-night-shift', label: 'Which projects require night shift?' },
+    { id: 'project-P101-recommendation', label: 'Recommendation for project P101' },
+    { id: 'project-P102-recommendation', label: 'Recommendation for project P102' }
+];
+
+function initChatWidget() {
+    const toggle = document.getElementById('chatToggle');
+    const panel = document.getElementById('chatPanel');
+    const closeBtn = document.getElementById('chatClose');
+    const quickContainer = document.getElementById('chatQuickQuestions');
+    const messages = document.getElementById('chatMessages');
+    const input = document.getElementById('chatInput');
+    const send = document.getElementById('chatSend');
+    const clearBtn = document.getElementById('chatClear');
+
+    if (!toggle || !panel || !closeBtn || !quickContainer || !messages || !input || !send) {
+        console.warn('Chat widget elements not found');
+        return;
+    }
+
+    // Render quick questions
+    CHAT_QUICK_QS.forEach(q => {
+        const btn = document.createElement('button');
+        btn.textContent = q.label;
+        btn.onclick = () => handleQuickQuestionClick(q.id);
+        quickContainer.appendChild(btn);
+    });
+
+    toggle.addEventListener('click', () => toggleChatPanel(true));
+    closeBtn.addEventListener('click', () => toggleChatPanel(false));
+
+    if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+            if (!confirm('Clear chat history?')) return;
+            messages.innerHTML = '';
+            addMessage('bot', 'Hello 👋 Welcome to Win chatbot I can answer questions related to attendance and late stay. Click a quick question or type your own.');
+        });
+    }
+    send.addEventListener('click', () => handleSendMessage());
+    input.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleSendMessage(); });
+
+    // welcome message
+    addMessage('bot', 'Hello 👋 Welcome to Win chatbot I can answer questions related to attendance and late stay. Click a quick question or type your own.');
+}
+
+function toggleChatPanel(open) {
+    const panel = document.getElementById('chatPanel');
+    const toggle = document.getElementById('chatToggle');
+    if (!panel || !toggle) return;
+    
+    if (open) {
+        panel.setAttribute('aria-hidden', 'false');
+        panel.style.display = 'flex';
+        toggle.style.display = 'none';
+    } else {
+        panel.setAttribute('aria-hidden', 'true');
+        panel.style.display = 'none';
+        toggle.style.display = 'inline-block';
+    }
+}
+
+function addMessage(role, text, forceScroll = false) {
+    const messages = document.getElementById('chatMessages');
+    if (!messages) return;
+    
+    const msg = document.createElement('div');
+    msg.className = 'chat-msg ' + (role === 'user' ? 'user' : 'bot');
+    msg.textContent = text;
+    messages.appendChild(msg);
+    // Always scroll to the newest message so latest answer is visible
+    setTimeout(() => {
+        messages.scrollTop = messages.scrollHeight;
+    }, 50);
+}
+
+function sendBotAnswer(text, forceScroll = false) {
+    addMessage('bot', text, forceScroll);
+    // friendly follow-up and ensure visible
+    setTimeout(() => {
+        addMessage('bot', 'Do you have any other queries? Thank you 😊', forceScroll);
+    }, 350);
+}
+
+function handleQuickQuestionClick(id) {
+    const question = CHAT_QUICK_QS.find(q => q.id === id);
+    if (!question) return;
+    try { toggleChatPanel(true); } catch (e) { /* ignore if not available */ }
+    addMessage('user', question.label, true);
+
+    // handle dashboard-specific questions using cached data
+    switch (id) {
+        case 'total-employees': {
+            if (currentWfoCompliance && typeof currentWfoCompliance.total_employees === 'number') {
+                return setTimeout(() => sendBotAnswer(`Total employees: ${currentWfoCompliance.total_employees}`, true), 300);
+            }
+            return setTimeout(() => sendBotAnswer('Total employees not available — refresh dashboard.', true), 300);
+        }
+        case 'present-today': {
+            const present = (currentWfoCompliance && typeof currentWfoCompliance.present_employees === 'number')
+                ? currentWfoCompliance.present_employees
+                : (currentAttendanceData && Array.isArray(currentAttendanceData.attendance_records) ? currentAttendanceData.attendance_records.length : null);
+            if (present !== null) return setTimeout(() => sendBotAnswer(`Present today: ${present}`, true), 300);
+            return setTimeout(() => sendBotAnswer('Present count not available — refresh dashboard.', true), 300);
+        }
+        case 'total-late-stay': {
+            if (currentLateStayData && typeof currentLateStayData.total_count === 'number') {
+                return setTimeout(() => sendBotAnswer(`Total late-stay employees: ${currentLateStayData.total_count}`, true), 300);
+            }
+            return setTimeout(() => sendBotAnswer('Late-stay count not available — refresh dashboard.', true), 300);
+        }
+        case 'women-late-stay': {
+            if (currentLateStayData) {
+                const femaleCount = typeof currentLateStayData.female_count === 'number'
+                    ? currentLateStayData.female_count
+                    : (Array.isArray(currentLateStayData.late_stay_employees) ? currentLateStayData.late_stay_employees.filter(e => e.gender === 'Female').length : null);
+                if (femaleCount !== null) return setTimeout(() => sendBotAnswer(`Women in late stay today: ${femaleCount}`, true), 300);
+            }
+            return setTimeout(() => sendBotAnswer('Women late-stay data not available — refresh dashboard.', true), 300);
+        }
+        case 'list-late-stay': {
+            if (currentLateStayData && Array.isArray(currentLateStayData.late_stay_employees)) {
+                const names = currentLateStayData.late_stay_employees.map(e => `${e.name || e.employee_id} (${e.checkout_time || '-'})`);
+                const text = names.length ? names.join(', ') : 'No late-stay employees today.';
+                return setTimeout(() => sendBotAnswer(`Late-stay employees: ${text}`, true), 300);
+            }
+            return setTimeout(() => sendBotAnswer('Late-stay data not available — refresh dashboard.', true), 300);
+        }
+        case 'wfo-compliance-percentage': {
+            if (currentWfoCompliance && typeof currentWfoCompliance.compliance_percentage === 'number') {
+                const pct = (typeof currentWfoCompliance.wfo_compliance_percentage === 'number')
+                    ? currentWfoCompliance.wfo_compliance_percentage
+                    : currentWfoCompliance.compliance_percentage;
+                return setTimeout(() => sendBotAnswer(`WFO compliance: ${pct}%`, true), 300);
+            }
+            return setTimeout(() => sendBotAnswer('WFO compliance data not available — refresh dashboard.', true), 300);
+        }
+        case 'wfh-compliance-percentage': {
+            if (currentWfoCompliance && typeof currentWfoCompliance.wfh_compliance_percentage === 'number') {
+                return setTimeout(() => sendBotAnswer(`WFH compliance: ${currentWfoCompliance.wfh_compliance_percentage}%`, true), 300);
+            }
+            return setTimeout(() => sendBotAnswer('WFH compliance data not available — refresh dashboard.', true), 300);
+        }
+        case 'project-P101-average':
+        case 'project-P102-average': {
+            const pid = id.split('-')[1];
+            const proj = currentProjectData[pid];
+            if (proj && proj.average_work_hours) return setTimeout(() => sendBotAnswer(`${proj.project_name} average work hours: ${proj.average_work_hours}`, true), 300);
+            return setTimeout(() => sendBotAnswer(`Project ${pid} data not available — refresh dashboard.`, true), 300);
+        }
+        case 'projects-high-late-night': {
+            const high = [];
+            Object.keys(currentProjectData).forEach(k => {
+                const p = currentProjectData[k];
+                if (p && p.late_night_frequency === 'High') high.push(p.project_name || k);
+            });
+            const text = high.length ? high.join(', ') : 'No projects with high late-night frequency.';
+            return setTimeout(() => sendBotAnswer(`High late-night projects: ${text}`, true), 300);
+        }
+        case 'projects-night-shift': {
+            const need = [];
+            Object.keys(currentProjectData).forEach(k => {
+                const p = currentProjectData[k];
+                if (p && p.requires_night_shift) need.push(p.project_name || k);
+            });
+            const text = need.length ? need.join(', ') : 'No projects require night shift.';
+            return setTimeout(() => sendBotAnswer(`Projects requiring night shift: ${text}`, true), 300);
+        }
+        case 'project-P101-recommendation':
+        case 'project-P102-recommendation': {
+            const pid = id.split('-')[1];
+            const proj = currentProjectData[pid];
+            if (proj && proj.recommendation) return setTimeout(() => sendBotAnswer(`Recommendation for ${proj.project_name}: ${proj.recommendation}`, true), 300);
+            return setTimeout(() => sendBotAnswer(`Recommendation for ${pid} not available — refresh dashboard.`, true), 300);
+        }
+        default:
+            return setTimeout(() => sendBotAnswer('Question not recognized.', true), 300);
+    }
+}
+
+function handleSendMessage() {
+    const input = document.getElementById('chatInput');
+    if (!input) return;
+    
+    const v = input.value.trim();
+    if (!v) return;
+    addMessage('user', v);
+    input.value = '';
+
+    // Try to match to a known Q by simple keyword checks
+    const low = v.toLowerCase();
+    let matched = null;
+        if (low.includes('total') && low.includes('employee')) matched = 'total-employees';
+        else if (low.includes('present')) matched = 'present-today';
+        else if (low.includes('late') && (low.includes('total') || low.includes('count') || low.includes('how many'))) matched = 'total-late-stay';
+        else if ((low.includes('female') || low.includes('women')) && low.includes('late')) matched = 'women-late-stay';
+        else if (low.includes('who') && low.includes('late')) matched = 'list-late-stay';
+        else if (low.includes('wfo') || (low.includes('compliance') && !low.includes('wfh'))) matched = 'wfo-compliance-percentage';
+        else if (low.includes('wfh') && low.includes('compliance')) matched = 'wfh-compliance-percentage';
+        else if (low.includes('p101') && low.includes('average')) matched = 'project-P101-average';
+        else if (low.includes('p102') && low.includes('average')) matched = 'project-P102-average';
+        else if (low.includes('which') && low.includes('high')) matched = 'projects-high-late-night';
+        else if (low.includes('require') && low.includes('night')) matched = 'projects-night-shift';
+        else if (low.includes('recommend') && low.includes('p101')) matched = 'project-P101-recommendation';
+        else if (low.includes('recommend') && low.includes('p102')) matched = 'project-P102-recommendation';
+
+    if (matched) {
+        return handleQuickQuestionClick(matched);
+    } else {
+        setTimeout(() => addMessage('bot', "I answer dashboard-specific questions. Try: 'How many employees?', 'Who stayed late?', or 'P101 average'"), 400);
+    }
+}
+
+// Initialize chat when dashboard loads
+document.addEventListener('DOMContentLoaded', () => {
+    try { initChatWidget(); } catch (e) { console.warn('Chat init failed', e); }
+});
 

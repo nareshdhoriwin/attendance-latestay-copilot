@@ -9,6 +9,8 @@ let currentLateStayData = null;
 let currentWfoCompliance = null;
 // Cache for project reports (P101, P102, etc.)
 let currentProjectData = {};
+// Cache for compliance data for CSV export
+let currentComplianceData = null;
 
 // Initialize dashboard on load
 document.addEventListener('DOMContentLoaded', async () => {
@@ -545,6 +547,9 @@ async function loadProjectReports() {
             projectP102.late_stay_employees = [];
         }
         
+        // Cache project data for CSV export
+        currentProjectData = { 'P101': projectP101, 'P102': projectP102 };
+        
         updateProjectCards([projectP101, projectP102]);
     } catch (error) {
         console.error('Error loading project reports:', error);
@@ -559,6 +564,9 @@ async function loadComplianceSummary() {
         const date = datePicker ? datePicker.value : null;
         
         const complianceData = await fetch(`${API_BASE_URL}/reports/wfo-compliance${date ? `?date=${date}` : ''}`).then(r => r.json());
+        
+        // Cache compliance data for CSV export
+        currentComplianceData = complianceData;
         
         // Update compliance summary card
         document.getElementById('complianceTotalEmployees').textContent = complianceData.total_employees || '-';
@@ -576,6 +584,130 @@ async function loadComplianceSummary() {
         console.error('Error loading compliance summary:', error);
         showError('Failed to load compliance summary.');
     }
+}
+
+// Download reports as CSV
+async function downloadReportsCSV() {
+    try {
+        // Get the date from the date picker
+        const datePicker = document.getElementById('datePicker');
+        const date = datePicker ? datePicker.value : new Date().toISOString().split('T')[0];
+        
+        // Format date for display
+        const formattedDate = date ? new Date(date + 'T00:00:00').toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        }) : 'N/A';
+        
+        // Build CSV content
+        let csvContent = `Reports Export - ${formattedDate}\n`;
+        csvContent += `Generated Date: ${new Date().toLocaleString('en-US')}\n\n`;
+        
+        // Compliance Summary Section
+        csvContent += `=== WFO/WFH Compliance Summary ===\n`;
+        if (currentComplianceData) {
+            csvContent += `Date,${currentComplianceData.date || date}\n`;
+            csvContent += `Total Employees,${currentComplianceData.total_employees || 0}\n`;
+            csvContent += `Present Employees,${currentComplianceData.present_employees || 0}\n`;
+            csvContent += `Absent Employees,${currentComplianceData.absent_employees || 0}\n`;
+            csvContent += `Overall Compliance,${currentComplianceData.compliance_percentage || 0}%\n`;
+            csvContent += `Status,${currentComplianceData.status || 'Unknown'}\n\n`;
+            
+            csvContent += `--- WFO Compliance ---\n`;
+            csvContent += `WFO Total,${currentComplianceData.wfo_total || 0}\n`;
+            csvContent += `WFO Present,${currentComplianceData.wfo_present || 0}\n`;
+            csvContent += `WFO Absent,${currentComplianceData.wfo_absent || 0}\n`;
+            csvContent += `WFO Compliance Percentage,${currentComplianceData.wfo_compliance_percentage || 0}%\n\n`;
+            
+            csvContent += `--- WFH Compliance ---\n`;
+            csvContent += `WFH Total,${currentComplianceData.wfh_total || 0}\n`;
+            csvContent += `WFH Present,${currentComplianceData.wfh_present || 0}\n`;
+            csvContent += `WFH Absent,${currentComplianceData.wfh_absent || 0}\n`;
+            csvContent += `WFH Compliance Percentage,${currentComplianceData.wfh_compliance_percentage || 0}%\n\n`;
+        } else {
+            csvContent += `No compliance data available\n\n`;
+        }
+        
+        // Project Reports Section
+        csvContent += `=== Project Work Balance Reports ===\n\n`;
+        
+        // Load project data if not already cached
+        if (!currentProjectData || Object.keys(currentProjectData).length === 0) {
+            await loadProjectReports();
+        }
+        
+        // Export each project
+        for (const projectId in currentProjectData) {
+            const project = currentProjectData[projectId];
+            if (project) {
+                csvContent += `--- ${project.project_name || projectId} ---\n`;
+                csvContent += `Project ID,${project.project_id || projectId}\n`;
+                csvContent += `Date,${project.date || date}\n`;
+                csvContent += `Average Work Hours,${project.average_work_hours || 'N/A'}\n`;
+                csvContent += `Total Employees,${project.total_employees || 0}\n`;
+                csvContent += `Late Night Frequency,${project.late_night_frequency || 'N/A'}\n`;
+                csvContent += `Late Night Count,${project.late_night_count || 0}\n`;
+                csvContent += `Requires Night Shift,${project.requires_night_shift ? 'Yes' : 'No'}\n`;
+                csvContent += `Late Stay Count,${project.late_stay_count || 0}\n`;
+                
+                // Count women in late stay
+                const womenLateStay = project.late_stay_employees 
+                    ? project.late_stay_employees.filter(e => e.gender === 'Female').length 
+                    : 0;
+                csvContent += `Women Late Stay,${womenLateStay}\n`;
+                csvContent += `Recommendation,"${project.recommendation || 'N/A'}"\n\n`;
+                
+                // Late stay employees details
+                if (project.late_stay_employees && project.late_stay_employees.length > 0) {
+                    csvContent += `Late Stay Employees Details\n`;
+                    csvContent += `Employee ID,Name,Gender,Checkout Time,Project,Office\n`;
+                    project.late_stay_employees.forEach(emp => {
+                        csvContent += `${emp.employee_id || ''},${emp.name || ''},${emp.gender || ''},${emp.checkout_time || ''},${emp.project_id || ''},${emp.office || ''}\n`;
+                    });
+                    csvContent += `\n`;
+                }
+            }
+        }
+        
+        // Create and download the file
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', `reports_${date || 'export'}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        showSuccess('Reports downloaded successfully!');
+    } catch (error) {
+        console.error('Error downloading reports CSV:', error);
+        showError('Failed to download reports. Please try again.');
+    }
+}
+
+// Show success message
+function showSuccess(message) {
+    const successDiv = document.createElement('div');
+    successDiv.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #10b981;
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+    `;
+    successDiv.textContent = message;
+    document.body.appendChild(successDiv);
+    
+    setTimeout(() => {
+        successDiv.remove();
+    }, 3000);
 }
 
 // Store original data for filtering

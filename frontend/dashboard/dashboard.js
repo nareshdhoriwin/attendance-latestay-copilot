@@ -15,6 +15,45 @@ document.addEventListener('DOMContentLoaded', () => {
     loadDashboard();
 });
 
+// Navigation function to switch between pages
+function showPage(pageId) {
+    // Hide all pages
+    const pages = document.querySelectorAll('.page-content');
+    pages.forEach(page => {
+        page.classList.remove('active');
+    });
+    
+    // Remove active class from all tabs
+    const tabs = document.querySelectorAll('.nav-tab');
+    tabs.forEach(tab => {
+        tab.classList.remove('active');
+    });
+    
+    // Show selected page
+    const selectedPage = document.getElementById(`page-${pageId}`);
+    if (selectedPage) {
+        selectedPage.classList.add('active');
+    }
+    
+    // Add active class to selected tab
+    const selectedTab = document.querySelector(`[data-page="${pageId}"]`);
+    if (selectedTab) {
+        selectedTab.classList.add('active');
+    }
+    
+    // Update content when switching pages
+    if (pageId === 'attendance' && currentAttendanceData) {
+        updateAttendanceTable(currentAttendanceData);
+    }
+    if (pageId === 'late-stay' && currentLateStayData) {
+        updateLateStayTable(currentLateStayData);
+    }
+    if (pageId === 'reports') {
+        // Reload project data for reports page
+        loadProjectReports();
+    }
+}
+
 // Load all dashboard data
 async function loadDashboard() {
     const date = document.getElementById('datePicker').value;
@@ -48,17 +87,31 @@ async function loadDashboard() {
         // Cache attendance and late-stay data for local filters, then update stats
         currentAttendanceData = attendanceData;
         currentLateStayData = lateStayData;
+        originalAttendanceData = JSON.parse(JSON.stringify(attendanceData));
+        originalLateStayData = JSON.parse(JSON.stringify(lateStayData));
         updateStats(attendanceData, lateStayData, womenLateStayData, wfoCompliance);
         
-        // Update tables
-        updateAttendanceTable(attendanceData);
-        updateLateStayTable(lateStayData);
+        // Get active page
+        const activePage = document.querySelector('.page-content.active');
+        const activePageId = activePage ? activePage.id : 'page-dashboard';
         
-        // Update charts
-        updateCharts(attendanceData, lateStayData);
+        // Update tables (only if on relevant pages)
+        if (activePageId === 'page-attendance' || activePageId === 'page-dashboard') {
+            updateAttendanceTable(attendanceData);
+        }
+        if (activePageId === 'page-late-stay' || activePageId === 'page-dashboard') {
+            updateLateStayTable(lateStayData);
+        }
         
-        // Update project cards
-        updateProjectCards([projectP101, projectP102]);
+        // Update charts (only on dashboard page)
+        if (activePageId === 'page-dashboard') {
+            updateCharts(attendanceData, lateStayData);
+        }
+        
+        // Update project cards (only on reports page)
+        if (activePageId === 'page-reports') {
+            updateProjectCards([projectP101, projectP102]);
+        }
         
     } catch (error) {
         console.error('Error loading dashboard:', error);
@@ -175,11 +228,15 @@ function updateCharts(attendanceData, lateStayData) {
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
+            aspectRatio: 2,
             plugins: {
                 legend: {
                     labels: {
-                        color: '#94a3b8'
+                        color: '#94a3b8',
+                        font: {
+                            size: 12
+                        }
                     }
                 }
             },
@@ -187,21 +244,21 @@ function updateCharts(attendanceData, lateStayData) {
                 y: {
                     beginAtZero: true,
                     ticks: {
-                        color: '#94a3b8',
+                        color: '#6b7280',
                         callback: function(value) {
                             return value + ':00';
                         }
                     },
                     grid: {
-                        color: 'rgba(148, 163, 184, 0.1)'
+                        color: 'rgba(107, 114, 128, 0.2)'
                     }
                 },
                 x: {
                     ticks: {
-                        color: '#94a3b8'
+                        color: '#6b7280'
                     },
                     grid: {
-                        color: 'rgba(148, 163, 184, 0.1)'
+                        color: 'rgba(107, 114, 128, 0.2)'
                     }
                 }
             }
@@ -238,14 +295,24 @@ function updateCharts(attendanceData, lateStayData) {
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
+            aspectRatio: 1.5,
             plugins: {
                 legend: {
                     position: 'bottom',
                     labels: {
-                        color: '#94a3b8',
-                        padding: 15
+                        color: '#6b7280',
+                        padding: 10,
+                        font: {
+                            size: 12
+                        }
                     }
+                }
+            },
+            layout: {
+                padding: {
+                    top: 10,
+                    bottom: 10
                 }
             }
         }
@@ -255,6 +322,8 @@ function updateCharts(attendanceData, lateStayData) {
 // Update project cards
 function updateProjectCards(projects) {
     const container = document.getElementById('projectCards');
+    if (!container) return;
+    
     container.innerHTML = '';
     
     projects.forEach(project => {
@@ -286,104 +355,191 @@ function updateProjectCards(projects) {
     });
 }
 
-// Toggle filter: prompt for Employee ID and filter attendance table locally
-function toggleFilter() {
-    if (!currentAttendanceData || !currentAttendanceData.attendance_records) {
-        showError('No attendance data available to filter.');
-        return;
+// Load project reports for reports page
+async function loadProjectReports() {
+    try {
+        const [projectP101, projectP102] = await Promise.all([
+            fetch(`${API_BASE_URL}/reports/work-balance/project/P101`).then(r => r.json()),
+            fetch(`${API_BASE_URL}/reports/work-balance/project/P102`).then(r => r.json())
+        ]);
+        updateProjectCards([projectP101, projectP102]);
+    } catch (error) {
+        console.error('Error loading project reports:', error);
+        showError('Failed to load project reports.');
     }
+}
 
-    const input = prompt('Enter Employee ID to filter (partial allowed). Leave blank to clear filter:');
-    if (input === null) return; // cancelled
+// Store original data for filtering
+let originalAttendanceData = null;
+let originalLateStayData = null;
 
-    const query = input.trim();
-    if (query === '') {
-        // Clear filter
-        updateAttendanceTable(currentAttendanceData);
-        return;
-    }
-
-    const q = query.toLowerCase();
-    const filtered = currentAttendanceData.attendance_records.filter(r => {
-        const id = String(r.employee_id || '').toLowerCase();
-        return id.includes(q);
+// Sort table function
+let sortDirection = {};
+function sortTable(tableId, columnIndex) {
+    const table = document.getElementById(tableId);
+    if (!table) return;
+    
+    const tbody = table.querySelector('tbody');
+    if (!tbody) return;
+    
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    if (rows.length === 0) return;
+    
+    // Skip if it's a loading or empty row
+    if (rows.length === 1 && rows[0].querySelector('.loading')) return;
+    
+    const th = table.querySelectorAll('th')[columnIndex];
+    if (!th) return;
+    
+    // Remove sort classes from all headers
+    table.querySelectorAll('th').forEach(h => {
+        h.classList.remove('sort-asc', 'sort-desc');
     });
+    
+    // Determine sort direction
+    const isAsc = !sortDirection[tableId + columnIndex];
+    sortDirection[tableId + columnIndex] = isAsc;
+    
+    // Add sort class to current header
+    th.classList.add(isAsc ? 'sort-asc' : 'sort-desc');
+    
+    // Sort rows
+    rows.sort((a, b) => {
+        const aText = a.cells[columnIndex]?.textContent.trim() || '';
+        const bText = b.cells[columnIndex]?.textContent.trim() || '';
+        
+        // Try to parse as number
+        const aNum = parseFloat(aText);
+        const bNum = parseFloat(bText);
+        
+        if (!isNaN(aNum) && !isNaN(bNum)) {
+            return isAsc ? aNum - bNum : bNum - aNum;
+        }
+        
+        // String comparison
+        return isAsc 
+            ? aText.localeCompare(bText)
+            : bText.localeCompare(aText);
+    });
+    
+    // Re-append sorted rows
+    rows.forEach(row => tbody.appendChild(row));
+}
 
+// Filter attendance table
+function filterAttendanceTable() {
+    if (!currentAttendanceData || !currentAttendanceData.attendance_records) {
+        console.warn('No attendance data available for filtering');
+        return;
+    }
+    
+    const searchInput = document.getElementById('attendanceSearch');
+    const statusSelect = document.getElementById('statusFilter');
+    
+    if (!searchInput || !statusSelect) {
+        console.warn('Filter elements not found');
+        return;
+    }
+    
+    const searchTerm = searchInput.value.toLowerCase() || '';
+    const statusFilter = statusSelect.value || '';
+    
+    let filtered = currentAttendanceData.attendance_records.filter(record => {
+        // Search filter
+        const matchesSearch = !searchTerm || 
+            String(record.employee_id || '').toLowerCase().includes(searchTerm) ||
+            String(record.name || '').toLowerCase().includes(searchTerm);
+        
+        // Status filter
+        let matchesStatus = true;
+        if (statusFilter) {
+            const isLate = record.checkin_time > '09:00';
+            const isLateStay = record.checkout_time >= '20:00';
+            
+            if (statusFilter === 'On Time' && (isLate || isLateStay)) {
+                matchesStatus = false;
+            } else if (statusFilter === 'Late Arrival' && (!isLate || isLateStay)) {
+                matchesStatus = false;
+            } else if (statusFilter === 'Late Stay' && !isLateStay) {
+                matchesStatus = false;
+            }
+        }
+        
+        return matchesSearch && matchesStatus;
+    });
+    
     updateAttendanceTable({ attendance_records: filtered });
 }
 
-// Toggle filter for Late Stay: prompt for Employee ID and filter late-stay table locally
-function toggleLateStayFilter() {
+// Filter late stay table
+function filterLateStayTable() {
     if (!currentLateStayData || !currentLateStayData.late_stay_employees) {
-        showError('No late-stay data available to filter.');
+        console.warn('No late stay data available for filtering');
         return;
     }
-
-    const input = prompt('Enter Employee ID to filter late-stay list (partial allowed). Leave blank to clear:');
-    if (input === null) return; // cancelled
-
-    const query = input.trim();
-    if (query === '') {
-        updateLateStayTable(currentLateStayData);
+    
+    const searchInput = document.getElementById('lateStaySearch');
+    const genderSelect = document.getElementById('genderFilter');
+    const projectSelect = document.getElementById('projectFilter');
+    
+    if (!searchInput || !genderSelect || !projectSelect) {
+        console.warn('Filter elements not found');
         return;
     }
-
-    const q = query.toLowerCase();
-    const filtered = currentLateStayData.late_stay_employees.filter(e => {
-        const id = String(e.employee_id || '').toLowerCase();
-        return id.includes(q);
+    
+    const searchTerm = searchInput.value.toLowerCase() || '';
+    const genderFilter = genderSelect.value || '';
+    const projectFilter = projectSelect.value || '';
+    
+    let filtered = currentLateStayData.late_stay_employees.filter(employee => {
+        // Search filter
+        const matchesSearch = !searchTerm || 
+            String(employee.employee_id || '').toLowerCase().includes(searchTerm) ||
+            String(employee.name || '').toLowerCase().includes(searchTerm);
+        
+        // Gender filter
+        const matchesGender = !genderFilter || employee.gender === genderFilter;
+        
+        // Project filter
+        const matchesProject = !projectFilter || employee.project_id === projectFilter;
+        
+        return matchesSearch && matchesGender && matchesProject;
     });
-
-    updateLateStayTable({ late_stay_employees: filtered, total_count: filtered.length });
+    
+    updateLateStayTable({ 
+        late_stay_employees: filtered, 
+        total_count: filtered.length,
+        date: currentLateStayData.date
+    });
 }
 
-// Clear any client-side late-stay filter and restore the table
+// Clear late stay filters
 function clearLateStayFilter() {
-    if (!currentLateStayData || !currentLateStayData.late_stay_employees) {
-        showError('No late-stay data available to clear filter.');
-        return;
+    if (document.getElementById('lateStaySearch')) {
+        document.getElementById('lateStaySearch').value = '';
     }
-    updateLateStayTable(currentLateStayData);
+    if (document.getElementById('genderFilter')) {
+        document.getElementById('genderFilter').value = '';
+    }
+    if (document.getElementById('projectFilter')) {
+        document.getElementById('projectFilter').value = '';
+    }
+    if (currentLateStayData) {
+        updateLateStayTable(currentLateStayData);
+    }
 }
 
-// Clear any client-side attendance filter and restore the attendance table
+// Clear attendance filters
 function clearFilter() {
-    if (!currentAttendanceData || !currentAttendanceData.attendance_records) {
-        showError('No attendance data available to clear filter.');
-        return;
+    if (document.getElementById('attendanceSearch')) {
+        document.getElementById('attendanceSearch').value = '';
     }
-    updateAttendanceTable(currentAttendanceData);
-}
-
-// Toggle status filter for Today's Attendance
-function toggleStatusFilter() {
-    if (!currentAttendanceData || !currentAttendanceData.attendance_records) {
-        showError('No attendance data available to filter.');
-        return;
+    if (document.getElementById('statusFilter')) {
+        document.getElementById('statusFilter').value = '';
     }
-
-    const input = prompt('Enter status to filter (on-time, late-arrival, late-stay). Leave blank to clear:');
-    if (input === null) return; // cancelled
-
-    const query = input.trim().toLowerCase();
-    if (query === '') {
+    if (currentAttendanceData) {
         updateAttendanceTable(currentAttendanceData);
-        return;
     }
-
-    const q = query;
-    const filtered = currentAttendanceData.attendance_records.filter(r => {
-        const checkout = r.checkout_time || '';
-        const checkin = r.checkin_time || '';
-        const isLateStay = checkout >= '20:00';
-        const isLate = checkin > '09:00';
-        let status = 'on-time';
-        if (isLateStay) status = 'late-stay';
-        else if (isLate) status = 'late-arrival';
-        return status === q;
-    });
-
-    updateAttendanceTable({ attendance_records: filtered });
 }
 
 // Show error message
